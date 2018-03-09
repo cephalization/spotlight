@@ -14,8 +14,12 @@
   color: white;
 }
 
-.App-title {
+.App-title-sm {
   font-size: 1.5em;
+}
+
+.App-title-lg {
+  font-size: 3.5em;
 }
 
 .App-intro {
