@@ -8,9 +8,12 @@ import {
 import LandingPage from './Pages/LandingPage/LandingPage';
 import ErrorPage from './Pages/ErrorPage/ErrorPage';
 
+const baseURL = process.env.REACT_APP_BASE_URL != null
+  ? process.env.REACT_APP_BASE_URL
+  : '';
 
 const App = () => (
-  <Router>
+  <Router basename={baseURL}>
     <Responsive>
       <Switch>
         <Route exact path="/" component={LandingPage} />
