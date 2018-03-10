@@ -1,5 +1,6 @@
 import React from 'react';
 import { Header, Container, Segment } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 const styles = {
@@ -26,11 +27,10 @@ const PageHeader = () => (
     <Container text>
       <Header
         inverted
-        as="a"
-        href="/"
+        as="h1"
         style={styles.headerBrand}
       >
-        <FontAwesomeIcon icon="search" /> Spotlight
+        <Link to="/"><FontAwesomeIcon icon="search" /> Spotlight</Link>
       </Header>
     </Container>
   </Segment>

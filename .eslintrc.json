@@ -18,7 +18,12 @@
         "no-unreachable": "warn",
         "no-unused-vars": "warn",
         "constructor-super": "warn",
-        "valid-typeof": "warn"
+        "valid-typeof": "warn",
+        "jsx-a11y/anchor-is-valid": [ "error", {
+            "components": [ "Link" ],
+            "specialLink": [ "hrefLeft", "hrefRight", "to" ],
+            "aspects": [ "noHref", "invalidHref", "preferButton" ]
+        }]
     },
     "extends": "airbnb"
 }
