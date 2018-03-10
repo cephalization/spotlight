@@ -5,11 +5,11 @@ import { Segment, Container } from 'semantic-ui-react';
 // Stylesheet object
 const styles = {
   segment: {
-    minHeight: '350px',
+    minHeight: '150px',
   },
   container: {
-    paddingTop: '5em',
-    paddingBottom: '1em',
+    paddingTop: '3em',
+    paddingBottom: '2em',
   },
 };
 

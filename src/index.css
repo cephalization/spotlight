@@ -31,3 +31,14 @@ a {
 a:hover, a:focus, a:active {
   color: inherit;
 }
+
+/*
+ * Shared Page Styles
+ */
+.lead {
+  font-size: 1.2em;
+}
+
+.right-pad {
+  padding-right: 5px;
+}
