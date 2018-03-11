@@ -38,15 +38,18 @@ const authRequestOptions = {
  */
 function requestAuthorization(req, callback) {
   let reAuth = true;
-  if (req.body.generalAuth && req.body.generalAuth.access_token && req.body.generalAuth.expires_on) {
+  if (
+    req.body.data.generalAuth &&
+    req.body.data.generalAuth.access_token &&
+    req.body.data.generalAuth.expires_on
+  ) {
     // If the token exists and is not expired, do not reauth
-    if (!moment().isAfter(req.body.generalAuth.expires_on)) {
+    if (!moment().isAfter(req.body.data.generalAuth.expires_on)) {
       reAuth = false;
     }
   }
 
   if (reAuth) {
-    console.log(authRequestOptions);
     request.post(
       authRequestOptions,
       (e, res, body) => {
@@ -54,22 +57,19 @@ function requestAuthorization(req, callback) {
           const expiration_date = moment();
           expiration_date.add(body.expires_in, 'seconds');
           // Return new auth bundle to requesting endpoint
-          console.log('Spotify Success');
           callback(null, {
             ...body,
             expires_on: expiration_date
           });
         } else {
           // Could not auth with Spotify, return error
-          console.log('Spotify Error');
           callback(body.error);
         }
       }
     );
   } else {
     // Requester's auth is good, use that
-    console.log('Requester auth good');
-    callback(null, req.body.generalAuth);
+    callback(null, req.body.data.generalAuth);
   }
 }
 
