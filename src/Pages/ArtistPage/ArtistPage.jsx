@@ -11,6 +11,13 @@ import {
   loadGeneralAuth,
 } from '../../utils';
 
+/**
+ * Abstract this out, make endpoint constants that auto append this
+ */
+const baseURL = process.env.REACT_APP_BASE_URL != null
+  ? process.env.REACT_APP_BASE_URL
+  : '';
+
 const artistCard = (loading, artist, search) => {
   const image = loading ? notFound : artist.images[0].url;
   const artistName = loading ? `Searching for ${search}...` : artist.name;
@@ -56,7 +63,7 @@ class ArtistPage extends React.Component {
 
   componentDidMount() {
     axios.post(
-      '/api/spotify/artist/',
+      `${baseURL}/api/spotify/artist/`,
       {
         data: {
           artistQuery: this.props.match.params.artistname,
