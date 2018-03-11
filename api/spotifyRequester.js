@@ -35,6 +35,9 @@ const authRequestOptions = {
  *   expires_on,  // moment() + expires_in
  *  }
  * )
+ *
+ * @param {Object} req the original request object to the Spotlight api
+ * @param {Function} callback non-standard callback function, receives (error, generalAuth)
  */
 function requestAuthorization(req, callback) {
   let reAuth = true;
@@ -73,4 +76,37 @@ function requestAuthorization(req, callback) {
   }
 }
 
+/**
+ * Create a header using an access token for spotify api requests
+ *
+ * @param {Object} authentication generalAuth object described at top of this file
+ */
+function createAccessHeader(authentication) {
+  return `${authentication.token_type} ${authentication.access_token}`
+}
+
+/**
+ * Make a request to the spotify api
+ *
+ * @param {String} URL spotify endpoint to query
+ * @param {String} QUERY uri encoded querystring as described by spotify api docs
+ * @param {String} REQUEST_TYPE string denoting which http request method to use
+ * @param {Object} AUTHENTICATION generalAuth object described at top of this file
+ * @param {Function} callback function to invoke after making the request
+ */
+function spotifyGeneralRequest(URL, QUERY, REQUEST_TYPE, AUTHENTICATION, callback) {
+  const requestConfig = {
+    url: `${URL}?${QUERY}`,
+    headers: { Authorization: createAccessHeader(AUTHENTICATION) },
+    json: true
+  };
+  request[REQUEST_TYPE](
+    requestConfig,
+    (e, response, body) => {
+      callback(e, response, body);
+    }
+  )
+}
+
 module.exports.getAppAuthorization = requestAuthorization;
+module.exports.spotifyGeneralRequest = spotifyGeneralRequest;
