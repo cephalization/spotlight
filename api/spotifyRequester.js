@@ -42,6 +42,7 @@ const authRequestOptions = {
 function requestAuthorization(req, callback) {
   let reAuth = true;
   if (
+    req.body.data &&
     req.body.data.generalAuth &&
     req.body.data.generalAuth.access_token &&
     req.body.data.generalAuth.expires_on

@@ -54,7 +54,7 @@ module.exports.RegisterRoutes = (router) => {
    *
    * @methods: GET
    */
-  router.get(ENDPOINT_URI + '/artist/', async (req, res) => {
+  router.post(ENDPOINT_URI + '/artist/', async (req, res) => {
     getAppAuthorization(req, (e, authorization) => {
       if (!e && req.body.data != null) {
         const message = ENDPOINT_URI + ': API GET Request Received with auth.';

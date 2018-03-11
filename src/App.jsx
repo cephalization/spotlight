@@ -6,6 +6,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage/LandingPage';
+import ArtistPage from './Pages/ArtistPage/ArtistPage';
 import ErrorPage from './Pages/ErrorPage/ErrorPage';
 
 const baseURL = process.env.REACT_APP_BASE_URL != null
@@ -17,6 +18,7 @@ const App = () => (
     <Responsive>
       <Switch>
         <Route exact path="/" component={LandingPage} />
+        <Route path="/artist/:artistname" component={ArtistPage} />
         <Route component={ErrorPage} />
       </Switch>
     </Responsive>

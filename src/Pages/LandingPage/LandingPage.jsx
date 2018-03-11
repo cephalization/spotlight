@@ -1,19 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Header, Button } from 'semantic-ui-react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import PageHeader from '../../Components/PageHeader/PageHeader';
 import PageFooter from '../../Components/PageFooter/PageFooter';
 import ContentSegment from '../../Components/ContentSegment/ContentSegment';
-import SearchBar from '../../Components/SearchBar/SearchBar';
+import ArtistSearchBar from '../../Components/SearchBar/ArtistSearchBar';
 
-const LandingPage = () => (
+const LandingPage = ({ history }) => (
   <div>
     <PageHeader />
     <ContentSegment>
       <Header as="h2">
         Search for an artist, see what they&apos;re up to
       </Header>
-      <SearchBar size="huge" />
+      <ArtistSearchBar history={history} />
       <ContentSegment>
         <Header as="h2">
           What can Spotlight do?
@@ -63,5 +64,11 @@ const LandingPage = () => (
     <PageFooter />
   </div>
 );
+
+LandingPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default LandingPage;
