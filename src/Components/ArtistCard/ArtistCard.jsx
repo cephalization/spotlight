@@ -5,7 +5,13 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { Card, Icon, Image, Button } from 'semantic-ui-react';
 import notFound from '../../Images/imagenotfound.png';
 
-const ArtistCard = ({ loading, artist, search }) => {
+const ArtistCard = ({
+  loading,
+  artist,
+  search,
+  compact,
+  ...props
+}) => {
   const image = loading ? notFound : _.get(artist, ['images', 0, 'url'], notFound);
   const artistName = loading ? `Searching for ${search}...` : _.get(artist, 'name', 'Artist Not Found!');
   const genres = loading ? '' : _.get(artist, 'genres', []).join(', ');
@@ -21,11 +27,13 @@ const ArtistCard = ({ loading, artist, search }) => {
       </Button>
     );
   const followers = loading ? 'Loading' : _.get(artist, ['followers', 'total'], 'N/A');
+  const compactProps = compact ? { floated: 'right', size: 'tiny' } : {};
 
   return (
-    <Card>
-      <Image src={image} />
+    <Card {...props}>
+      {!compact ? <Image src={image} /> : null}
       <Card.Content>
+        {compact ? <Image src={image} {...compactProps} /> : null}
         <Card.Header>
           {artistName}
         </Card.Header>
@@ -56,12 +64,14 @@ ArtistCard.propTypes = {
     genres: PropTypes.array,
   }),
   search: PropTypes.string,
+  compact: PropTypes.bool,
 };
 
 ArtistCard.defaultProps = {
   loading: false,
   artist: {},
   search: 'Artist',
+  compact: false,
 };
 
 export default ArtistCard;

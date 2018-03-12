@@ -8,6 +8,7 @@ const ArtistSearchBar = ({ history, disabled }) => (
     placeholder="Search for an artist..."
     disabled={disabled}
     onEnter={
+      // Accept input when the enter key is pressed, and the value is valid
       (e) => {
         if (e.target.value != null && e.target.value.length && !disabled) {
           history.push(`/artist/${e.target.value}`);
