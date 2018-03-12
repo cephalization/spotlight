@@ -97,7 +97,7 @@ function createAccessHeader(authentication) {
  */
 function spotifyGeneralRequest(URL, QUERY, REQUEST_TYPE, AUTHENTICATION, callback) {
   const requestConfig = {
-    url: `${URL}?${QUERY}`,
+    url: `${URL}${QUERY != null ? '?' + QUERY : ''}`,
     headers: { Authorization: createAccessHeader(AUTHENTICATION) },
     json: true
   };

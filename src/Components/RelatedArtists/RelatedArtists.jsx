@@ -26,8 +26,18 @@ class RelatedArtists extends React.Component {
     this.state = getInitState();
   }
 
-  componentDidMount() {
-    this.handleRelatedArtistsRequest(this.props.primaryArtistID);
+  componentWillReceiveProps(newProps) {
+    if (
+      (this.props.primaryArtistID !== newProps.primaryArtistID) &&
+      (newProps.primaryArtistID !== '')
+    ) {
+      // A new artist ID was received, re-query
+      this.handleRelatedArtistsRequest(newProps.primaryArtistID);
+    } else if (newProps.primaryArtistID === '') {
+      // The artist ID is empty, must be getting a new artist
+      // reset the state of this component
+      this.setState(getInitState());
+    }
   }
 
   /**
