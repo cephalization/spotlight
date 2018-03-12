@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Card, Icon, Image } from 'semantic-ui-react';
 import ContentSegment from '../../Components/ContentSegment/ContentSegment';
 import PageFooter from '../../Components/PageFooter/PageFooter';
 import PageHeader from '../../Components/PageHeader/PageHeader';
-import notFound from '../../Images/imagenotfound.png';
+import ArtistCard from '../../Components/ArtistCard/ArtistCard';
 import {
   saveGeneralAuth,
   loadGeneralAuth,
 } from '../../utils';
+import ArtistSearchBar from '../../Components/SearchBar/ArtistSearchBar';
+import ErrorPopup from '../../Components/ErrorPopup/ErrorPopup';
 
 /**
  * Abstract this out, make endpoint constants that auto append this
@@ -18,55 +19,38 @@ const baseURL = process.env.REACT_APP_BASE_URL != null
   ? process.env.REACT_APP_BASE_URL
   : '';
 
-const artistCard = (loading, artist, search) => {
-  const image = loading ? notFound : artist.images[0].url;
-  const artistName = loading ? `Searching for ${search}...` : artist.name;
-  const genres = loading ? '' : artist.genres.join(', ');
-  const link = loading
-    ? 'Loading artist information...'
-    : <a href={artist.external_urls.spotify}>Artist&apos;s Spotify Profile</a>;
-  const followers = loading ? 'Loading' : artist.followers.total;
-
-  return (
-    <Card>
-      <Image src={image} />
-      <Card.Content>
-        <Card.Header>
-          {artistName}
-        </Card.Header>
-        <Card.Meta>
-          <span className="date">
-            {genres}
-          </span>
-        </Card.Meta>
-        <Card.Description>
-          {link}
-        </Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <Icon name="user" />
-        {followers} Followers
-      </Card.Content>
-    </Card>
-  );
-};
+const getInitState = () => (
+  {
+    artist: {},
+    loading: true,
+    errors: [],
+  }
+);
 
 class ArtistPage extends React.Component {
   constructor(props) {
     super(props);
+    this.handleArtistRequest = this.handleArtistRequest.bind(this);
 
-    this.state = {
-      artist: {},
-      loading: true,
-    };
+    this.state = getInitState();
   }
 
   componentDidMount() {
+    this.handleArtistRequest(this.props.match.params.artistname);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.match.params.artistname !== newProps.match.params.artistname) {
+      this.setState(getInitState(), this.handleArtistRequest(newProps.match.params.artistname));
+    }
+  }
+
+  handleArtistRequest(query) {
     axios.post(
       `${baseURL}/api/spotify/artist/`,
       {
         data: {
-          artistQuery: this.props.match.params.artistname,
+          artistQuery: query,
           generalAuth: loadGeneralAuth(),
         },
       },
@@ -77,18 +61,35 @@ class ArtistPage extends React.Component {
         artist: response.data.data.artist,
       });
     }).catch(error => (
-      console.log(error)
+      this.setState({
+        ...getInitState(),
+        loading: false,
+        errors: [
+          ...this.state.errors,
+          <ErrorPopup
+            key={this.state.errors.length + 1}
+            header="An error occured searching for that artist..."
+            error={error.toString()}
+          />,
+        ],
+      })
     ));
   }
 
   render() {
-    const { match } = this.props;
+    const { match, history } = this.props;
 
     return (
       <div>
         <PageHeader />
         <ContentSegment>
-          {artistCard(this.state.loading, this.state.artist, match.params.artistname)}
+          {this.state.errors}
+          <ArtistSearchBar disabled={this.state.loading} history={history} />
+          <ArtistCard
+            loading={this.state.loading}
+            artist={this.state.artist}
+            search={match.params.artistname}
+          />
         </ContentSegment>
         <PageFooter />
       </div>
@@ -97,6 +98,9 @@ class ArtistPage extends React.Component {
 }
 
 ArtistPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       artistname: PropTypes.string,
