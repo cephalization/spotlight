@@ -28,8 +28,8 @@ class RelatedArtists extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (
-      (this.props.primaryArtistID !== newProps.primaryArtistID) &&
-      (newProps.primaryArtistID !== '')
+      this.props.primaryArtistID !== newProps.primaryArtistID &&
+      newProps.primaryArtistID !== ''
     ) {
       // A new artist ID was received, re-query
       this.handleRelatedArtistsRequest(newProps.primaryArtistID);

@@ -30,6 +30,64 @@ const ENDPOINT_URI = '/spotify';
 
 module.exports.RegisterRoutes = (router) => {
   /**
+   * /api/spotify/artist-search endpoint
+   *
+   * Wrapper for GET https://api.spotify.com/v1/search
+   *
+   * Expects JSON body of:
+   * {
+   *  data: {
+   *    generalAuth, // auth information, described at top of file
+   *    artistQuery, // string containing user's query for an artist
+   *  }
+   * }
+   *
+   * Returns JSON body of:
+   * {
+   *  data: {
+   *    success, // boolean containing status of operation
+   *    error, // If any
+   *    generalAuth, // auth information, described at top of file
+   *    artist, // object containing spotify's response for the FIRST artist found
+   *  }
+   * }
+   *
+   * @methods: POST (should be get and read from headers+querystring)
+   */
+  router.post(ENDPOINT_URI + '/artist-search/', async (req, res) => {
+    getAppAuthorization(req, (e, authorization) => {
+      if (!e && req.body.data != null) {
+        const message = ENDPOINT_URI + ': API GET Request Received with auth.';
+
+        // We have authorization from Spotify, query for the artist
+        spotifyGeneralRequest(
+          'https://api.spotify.com/v1/search',
+          `q=${encodeURIComponent(req.body.data.artistQuery)}&type=artist`,
+          'get',
+          authorization,
+          (e, searchResponse, body) => {
+            if (!e && searchResponse.statusCode === 200) {
+              // Return the first artist we find, change this later
+              res.json({
+                success: true,
+                data: {
+                  generalAuth: authorization,
+                  artist: body.artists.items[0]
+                }
+              });
+            } else {
+              res.status(body.error.status).json({ success: false, message: body.error.message, error: body.error });
+            }
+          }
+        );
+      } else {
+        const message = ENDPOINT_URI + ': API GET Request FAILED. See Response.';
+        res.status(message.statusCode).json({ success: false, message, error: e });
+      }
+    })
+  });
+
+  /**
    * /api/spotify/artist endpoint
    *
    * Wrapper for GET https://api.spotify.com/v1/search
@@ -61,8 +119,8 @@ module.exports.RegisterRoutes = (router) => {
 
         // We have authorization from Spotify, query for the artist
         spotifyGeneralRequest(
-          'https://api.spotify.com/v1/search',
-          `q=${encodeURIComponent(req.body.data.artistQuery)}&type=artist`,
+          `https://api.spotify.com/v1/artists/${req.body.data.artistID}`,
+          null,
           'get',
           authorization,
           (e, searchResponse, body) => {
@@ -72,11 +130,11 @@ module.exports.RegisterRoutes = (router) => {
                 success: true,
                 data: {
                   generalAuth: authorization,
-                  artist: body.artists.items[0]
+                  artist: body
                 }
               });
             } else {
-              res.json({ success: false, message: body.error, error: e });
+              res.status(body.error.status).json({ success: false, message: body.error.message, error: body.error });
             }
           }
         );
@@ -84,11 +142,11 @@ module.exports.RegisterRoutes = (router) => {
         const message = ENDPOINT_URI + ': API GET Request FAILED. See Response.';
         res.json({ success: false, message, error: e });
       }
-    })
-  })
+    });
+  });
 
   /**
-   * /api/spotify/artist endpoint
+   * /api/spotify/relatedartists endpoint
    *
    * Wrapper for GET https://api.spotify.com/v1/search
    *
@@ -134,7 +192,7 @@ module.exports.RegisterRoutes = (router) => {
                 }
               });
             } else {
-              res.json({ success: false, message: body.error, error: e });
+              res.status(body.error.status).json({ success: false, message: body.error.message, error: body.error });
             }
           }
         );
@@ -142,6 +200,6 @@ module.exports.RegisterRoutes = (router) => {
         const message = ENDPOINT_URI + ': API GET Request FAILED. See Response.';
         res.json({ success: false, message, error: e });
       }
-    })
-  })
+    });
+  });
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { Card, Icon, Image, Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import notFound from '../../Images/imagenotfound.png';
 
 const ArtistCard = ({
@@ -44,6 +45,9 @@ const ArtistCard = ({
       objectFit: 'cover',
     },
   };
+  const linkStyle = {
+    textDecoration: 'underline',
+  };
 
   return (
     <Card {...props}>
@@ -51,7 +55,7 @@ const ArtistCard = ({
       <Card.Content>
         {compact ? <Image src={image} {...compactProps} /> : null}
         <Card.Header>
-          {artistName}
+          {!compact ? artistName : <Link style={linkStyle} to={`/artist/${artist.id}`}>{artistName}</Link> }
         </Card.Header>
         <Card.Meta>
           <span className="date">

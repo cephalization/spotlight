@@ -59,17 +59,17 @@ class ArtistPage extends React.Component {
   }
 
   /**
-   * Make a query to Spotlight API and retrieve artist data
+   * Make a query to Spotlight API and retrieve related artist data
    * If any request errors occur, log them in state
    *
-   * @param {String} query user's search input for artist name (will be sanitized on server)
+   * @param {String} artistID artist id from spotify artist response
    */
-  handleArtistRequest(query) {
+  handleArtistRequest(artistID) {
     axios.post(
       artistEndpoint,
       {
         data: {
-          artistQuery: query,
+          artistID,
           generalAuth: loadGeneralAuth(),
         },
       },
@@ -83,9 +83,8 @@ class ArtistPage extends React.Component {
       this.setState({
         ...getInitState(),
         loading: false,
-        errors: this.state.errors, // keep page errors when wiping the state
       });
-      this.handleErrors(error, 'An error occured searching for that artist...');
+      this.handleErrors(error, 'An error occured getting that artist...');
     });
   }
 
@@ -110,7 +109,11 @@ class ArtistPage extends React.Component {
               />
             ))
           }
-          <ArtistSearchBar disabled={this.state.loading} history={history} />
+          <ArtistSearchBar
+            disabled={this.state.loading}
+            history={history}
+            onError={this.handleErrors}
+          />
           <ArtistCard
             loading={this.state.loading}
             artist={this.state.artist}
