@@ -27,11 +27,27 @@ const ArtistCard = ({
       </Button>
     );
   const followers = loading ? 'Loading' : _.get(artist, ['followers', 'total'], 'N/A');
-  const compactProps = compact ? { floated: 'right', size: 'tiny' } : {};
+  const compactProps = {
+    floated: 'right',
+    size: 'tiny',
+    style: {
+      height: '100px',
+      width: '100px',
+      objectFit: 'cover',
+      borderRadius: '80%',
+    },
+  };
+  const fullSizeProps = {
+    style: {
+      height: '300px',
+      width: '300px',
+      objectFit: 'cover',
+    },
+  };
 
   return (
     <Card {...props}>
-      {!compact ? <Image src={image} /> : null}
+      {!compact ? <Image src={image} {...fullSizeProps} /> : null}
       <Card.Content>
         {compact ? <Image src={image} {...compactProps} /> : null}
         <Card.Header>

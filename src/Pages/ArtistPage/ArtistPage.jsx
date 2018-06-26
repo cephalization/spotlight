@@ -94,7 +94,7 @@ class ArtistPage extends React.Component {
     const artistID = _.get(this.state.artist, 'id', '');
 
     return (
-      <div>
+      <React.Fragment>
         <PageHeader />
         <ContentSegment>
           {
@@ -119,7 +119,7 @@ class ArtistPage extends React.Component {
           <RelatedArtists onError={this.handleErrors} primaryArtistID={artistID} />
         </ContentSegment>
         <PageFooter />
-      </div>
+      </React.Fragment>
     );
   }
 }
