@@ -50,7 +50,7 @@ const ArtistCard = ({
 
   return (
     <Card {...props} fluid={fluid}>
-      {!compact ? <Image src={image} {...fullSizeProps} /> : null}
+      {!compact ? <Image src={image} centered {...fullSizeProps} /> : null}
       <Card.Content>
         {compact ? <Image src={image} {...compactProps} /> : null}
         <Card.Header>

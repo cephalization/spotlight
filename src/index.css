@@ -36,6 +36,30 @@ body {
   text-decoration: underline;
 }
 
+.album-item {
+  transition: background-color 120ms;
+  border: 1px solid #eee;
+}
+
+.album-item:hover {
+  cursor: pointer;
+  background-color: #eee !important;
+}
+
+.selected-album-item {
+  background-color: #eee !important;
+  border: 1px solid #eee;
+}
+
+.selected-album-item:hover {
+  cursor: pointer;
+  background-color: #ddd;
+}
+
+.no-padding {
+  padding: 0 0 0 0 !important;
+}
+
 /*
  * Shared Page Styles
  */

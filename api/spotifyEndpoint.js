@@ -96,7 +96,7 @@ module.exports.RegisterRoutes = (router) => {
    * {
    *  data: {
    *    generalAuth, // auth information, described at top of file
-   *    artistQuery, // string containing user's query for an artist
+   *    artistID, // string containing user's query for an artist
    *  }
    * }
    *
@@ -154,7 +154,7 @@ module.exports.RegisterRoutes = (router) => {
    * {
    *  data: {
    *    generalAuth, // auth information, described at top of file
-   *    artistQuery, // string containing user's query for an artist
+   *    artistID, // string containing user's query for an artist
    *  }
    * }
    *
@@ -212,7 +212,7 @@ module.exports.RegisterRoutes = (router) => {
    * {
    *  data: {
    *    generalAuth, // auth information, described at top of file
-   *    artistQuery, // string containing user's query for an artist
+   *    artistID, // string containing user's query for an artist
    *  }
    * }
    *
@@ -247,6 +247,122 @@ module.exports.RegisterRoutes = (router) => {
                 data: {
                   generalAuth: authorization,
                   tracks: body.tracks
+                }
+              });
+            } else {
+              res.status(body.error.status).json({ success: false, message: body.error.message, error: body.error });
+            }
+          }
+        );
+      } else {
+        const message = ENDPOINT_URI + ': API GET Request FAILED. See Response.';
+        res.json({ success: false, message, error: e });
+      }
+    });
+  });
+
+  /**
+   * /api/spotify/albums endpoint
+   *
+   * Wrapper for GET https://api.spotify.com/v1/artists/{id}/albums
+   *
+   * Expects JSON body of:
+   * {
+   *  data: {
+   *    generalAuth, // auth information, described at top of file
+   *    artistID, // string containing user's query for an artist
+   *  }
+   * }
+   *
+   * Returns JSON body of:
+   * {
+   *  data: {
+   *    success, // boolean containing status of operation
+   *    error, // If any
+   *    generalAuth, // auth information, described at top of file
+   *    albums, // array containing spotify's response for the albums of an artist
+   *  }
+   * }
+   *
+   * @methods: POST (should be get and read from headers+querystring)
+   */
+  router.post(ENDPOINT_URI + '/albums/', async (req, res) => {
+    getAppAuthorization(req, (e, authorization) => {
+      if (!e && req.body.data != null) {
+        const message = ENDPOINT_URI + ': API GET Request Received with auth.';
+
+        // We have authorization from Spotify, query for the artist
+        spotifyGeneralRequest(
+          `https://api.spotify.com/v1/artists/${req.body.data.artistID}/albums?market=US&limit=10&include_groups=album`,
+          null,
+          'get',
+          authorization,
+          (e, albumsResponse, body) => {
+            if (!e && albumsResponse.statusCode === 200) {
+              // Return the first artist we find, change this later
+              res.json({
+                success: true,
+                data: {
+                  generalAuth: authorization,
+                  albums: body.items
+                }
+              });
+            } else {
+              res.status(body.error.status).json({ success: false, message: body.error.message, error: body.error });
+            }
+          }
+        );
+      } else {
+        const message = ENDPOINT_URI + ': API GET Request FAILED. See Response.';
+        res.json({ success: false, message, error: e });
+      }
+    });
+  });
+
+  /**
+   * /api/spotify/tracks endpoint
+   *
+   * Wrapper for GET https://api.spotify.com/v1/albums/{id}/tracks
+   *
+   * Expects JSON body of:
+   * {
+   *  data: {
+   *    generalAuth, // auth information, described at top of file
+   *    artistID, // string containing user's query for an artist
+   *  }
+   * }
+   *
+   * Returns JSON body of:
+   * {
+   *  data: {
+   *    success, // boolean containing status of operation
+   *    error, // If any
+   *    generalAuth, // auth information, described at top of file
+   *    tracks, // array containing spotify's response for the albums of an artist
+   *  }
+   * }
+   *
+   * @methods: POST (should be get and read from headers+querystring)
+   */
+  router.post(ENDPOINT_URI + '/tracks/', async (req, res) => {
+    getAppAuthorization(req, (e, authorization) => {
+      if (!e && req.body.data != null) {
+        const message = ENDPOINT_URI + ': API GET Request Received with auth.';
+
+        // We have authorization from Spotify, query for the artist
+        spotifyGeneralRequest(
+          `https://api.spotify.com/v1/albums/${req.body.data.albumID}/tracks`,
+          null,
+          'get',
+          authorization,
+          (e, albumsResponse, body) => {
+            if (!e && albumsResponse.statusCode === 200) {
+              // Return the first artist we find, change this later
+              res.json({
+                success: true,
+                data: {
+                  generalAuth: authorization,
+                  tracks: body.items
                 }
               });
             } else {

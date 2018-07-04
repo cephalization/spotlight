@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card } from 'semantic-ui-react';
+import { Card, Grid } from 'semantic-ui-react';
 import _ from 'lodash';
 import ContentSegment from '../ContentSegment/ContentSegment';
 import ArtistCard from '../ArtistCard/ArtistCard';
 import TracksCard from '../TracksCard/TracksCard';
+import AlbumsCard from '../AlbumsCard/AlbumsCard';
 
 class MainArtist extends React.Component {
   constructor(props) {
@@ -52,19 +53,31 @@ class MainArtist extends React.Component {
 
     return (
       <ContentSegment>
-        <Card.Group>
-          <ArtistCard
-            loading={loading}
-            artist={artist}
-            search={query}
-            width={width}
-          />
-          <TracksCard
-            artistID={_.get(artist, 'id', '')}
-            onError={onError}
-            width={width}
-          />
-        </Card.Group>
+        <Grid columns={2} relaxed stackable>
+          <Grid.Row stretched>
+            <Grid.Column width={8}>
+              <Card.Group itemsPerRow={2} stackable>
+                <ArtistCard
+                  loading={loading}
+                  artist={artist}
+                  search={query}
+                  width={width}
+                />
+                <TracksCard
+                  artistID={_.get(artist, 'id', '')}
+                  onError={onError}
+                  width={width}
+                />
+              </Card.Group>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <AlbumsCard
+                artistID={_.get(artist, 'id', '')}
+                onError={onError}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </ContentSegment>
     );
   }

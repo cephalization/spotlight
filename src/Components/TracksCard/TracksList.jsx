@@ -4,15 +4,20 @@ import { Feed } from 'semantic-ui-react';
 const styles = {
   overflowY: 'auto',
   maxHeight: '400px',
+  minHeight: '400px',
+  paddingLeft: '1em',
 };
 
-const TracksList = ({ tracks }) => (
+const TracksList = ({ tracks, showAlbumInfo, emptyMessage }) => (
   <Feed
     style={styles}
   >
-    {tracks.map(track => (
+    {tracks.map((track, i) => (
       <Feed.Event key={track.name}>
-        <Feed.Label image={track.album.images[0].url} />
+        {showAlbumInfo
+          ? <Feed.Label image={track.album.images[0].url} />
+          : <Feed.Label>{i}</Feed.Label>
+        }
         <Feed.Content>
           <Feed.Summary>
             <a
@@ -23,15 +28,17 @@ const TracksList = ({ tracks }) => (
               {track.name}
             </a>
           </Feed.Summary>
-          <Feed.Extra>
-            <a
-              className="spotify-link"
-              href={track.album.external_urls.spotify}
-              target="_blank"
-            >
-              {track.album.name}
-            </a>
-          </Feed.Extra>
+          {showAlbumInfo &&
+            <Feed.Extra>
+              <a
+                className="spotify-link"
+                href={track.album.external_urls.spotify}
+                target="_blank"
+              >
+                {track.album.name}
+              </a>
+            </Feed.Extra>
+          }
         </Feed.Content>
       </Feed.Event>
     ))}
@@ -39,11 +46,16 @@ const TracksList = ({ tracks }) => (
       tracks.length === 0 &&
       <Feed.Event>
         <Feed.Content>
-          <Feed.Summary>No tracks available</Feed.Summary>
+          <Feed.Summary>{emptyMessage}</Feed.Summary>
         </Feed.Content>
       </Feed.Event>
     }
   </Feed>
 );
+
+TracksList.defaultProps = {
+  showAlbumInfo: true,
+  emptyMessage: 'No tracks available',
+};
 
 export default TracksList;
