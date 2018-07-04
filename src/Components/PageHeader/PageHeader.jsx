@@ -30,7 +30,7 @@ const PageHeader = () => (
         as="h1"
         style={styles.headerBrand}
       >
-        <Link to="/"><FontAwesomeIcon icon="search" /> Spotlight</Link>
+        <Link className="hero" to="/"><FontAwesomeIcon icon="search" /> Spotlight</Link>
       </Header>
     </Container>
   </Segment>

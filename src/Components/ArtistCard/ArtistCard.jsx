@@ -11,11 +11,12 @@ const ArtistCard = ({
   artist,
   search,
   compact,
+  width,
   ...props
 }) => {
   const image = loading ? notFound : _.get(artist, ['images', 0, 'url'], notFound);
   const artistName = loading ? `Searching for ${search}...` : _.get(artist, 'name', 'Artist Not Found!');
-  const genres = loading ? '' : _.get(artist, 'genres', []).join(', ');
+  const genres = loading ? [] : _.get(artist, 'genres', []);
   const link = loading
     ? 'Loading artist information...'
     : (
@@ -45,21 +46,19 @@ const ArtistCard = ({
       objectFit: 'cover',
     },
   };
-  const linkStyle = {
-    textDecoration: 'underline',
-  };
+  const fluid = !compact && width != null && width < 667;
 
   return (
-    <Card {...props}>
+    <Card {...props} fluid={fluid}>
       {!compact ? <Image src={image} {...fullSizeProps} /> : null}
       <Card.Content>
         {compact ? <Image src={image} {...compactProps} /> : null}
         <Card.Header>
-          {!compact ? artistName : <Link style={linkStyle} to={`/artist/${artist.id}`}>{artistName}</Link> }
+          {!compact ? artistName : <Link className="spotify-link" to={`/artist/${artist.id}`}>{artistName}</Link> }
         </Card.Header>
         <Card.Meta>
           <span className="date">
-            {genres}
+            {compact ? genres.join(', ') : genres.filter((v, i) => i < 3).join(', ')}
           </span>
         </Card.Meta>
         <Card.Description>
@@ -85,6 +84,7 @@ ArtistCard.propTypes = {
   }),
   search: PropTypes.string,
   compact: PropTypes.bool,
+  width: PropTypes.number,
 };
 
 ArtistCard.defaultProps = {
@@ -92,6 +92,7 @@ ArtistCard.defaultProps = {
   artist: {},
   search: 'Artist',
   compact: false,
+  width: null,
 };
 
 export default ArtistCard;

@@ -5,15 +5,23 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+  font-size: 19px;
 }
 
-.ui.header {
+.hero {
   font-family: 'Poppins', sans-serif;
 }
 
-a {
-  color: rgba(0, 0, 0, .87);
+.spotify-link {
+  color: rgba(0, 0, 0, .8);
+  border-bottom: 2px solid #1DB954;
+  transition: background-color 120ms;
+}
+
+.spotify-link:hover, .spotify-link:focus, .spotify-link:active {
+  color: #fff;
+  background-color: #1DB954;
+  outline: none;
 }
 
 .inverted {
@@ -26,10 +34,6 @@ a {
 
 .error {
   text-decoration: underline;
-}
-
-a:hover, a:focus, a:active {
-  color: inherit;
 }
 
 /*

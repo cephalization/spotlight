@@ -58,7 +58,7 @@ const LandingPage = ({ history }) => (
           Signing up will allow you to link your Spotify account and unlock the full potential
           of Spotlight!
         </p>
-        <Button primary>Create account</Button>
+        <Button disabled primary>Create account</Button>
       </ContentSegment>
     </ContentSegment>
     <PageFooter />

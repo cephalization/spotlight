@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 
 
 /**
@@ -22,4 +21,3 @@ fontawesome.library.add(brands, faSearch, faBell, faCompass, faUserCircle);
 
 // eslint-disable-next-line
 ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();

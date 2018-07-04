@@ -5,7 +5,6 @@ import _ from 'lodash';
 import ContentSegment from '../../Components/ContentSegment/ContentSegment';
 import PageFooter from '../../Components/PageFooter/PageFooter';
 import PageHeader from '../../Components/PageHeader/PageHeader';
-import ArtistCard from '../../Components/ArtistCard/ArtistCard';
 import RelatedArtists from '../../Components/RelatedArtists/RelatedArtists';
 import {
   saveGeneralAuth,
@@ -14,6 +13,7 @@ import {
 import ArtistSearchBar from '../../Components/SearchBar/ArtistSearchBar';
 import ErrorPopup from '../../Components/ErrorPopup/ErrorPopup';
 import { artistEndpoint } from '../../endpoints';
+import MainArtist from '../../Components/MainArtist/MainArtist';
 
 const getInitState = () => (
   {
@@ -114,10 +114,11 @@ class ArtistPage extends React.Component {
             history={history}
             onError={this.handleErrors}
           />
-          <ArtistCard
+          <MainArtist
             loading={this.state.loading}
             artist={this.state.artist}
-            search={match.params.artistname}
+            query={match.params.artistname}
+            onError={this.handleErrors}
           />
           <RelatedArtists onError={this.handleErrors} primaryArtistID={artistID} />
         </ContentSegment>

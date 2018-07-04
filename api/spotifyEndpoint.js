@@ -202,4 +202,62 @@ module.exports.RegisterRoutes = (router) => {
       }
     });
   });
+
+  /**
+   * /api/spotify/toptracks endpoint
+   *
+   * Wrapper for GET https://api.spotify.com/v1/artists/{id}/top-tracks
+   *
+   * Expects JSON body of:
+   * {
+   *  data: {
+   *    generalAuth, // auth information, described at top of file
+   *    artistQuery, // string containing user's query for an artist
+   *  }
+   * }
+   *
+   * Returns JSON body of:
+   * {
+   *  data: {
+   *    success, // boolean containing status of operation
+   *    error, // If any
+   *    generalAuth, // auth information, described at top of file
+   *    tracks, // array containing spotify's response for the tracks of an artist
+   *  }
+   * }
+   *
+   * @methods: POST (should be get and read from headers+querystring)
+   */
+  router.post(ENDPOINT_URI + '/toptracks/', async (req, res) => {
+    getAppAuthorization(req, (e, authorization) => {
+      if (!e && req.body.data != null) {
+        const message = ENDPOINT_URI + ': API GET Request Received with auth.';
+
+        // We have authorization from Spotify, query for the artist
+        spotifyGeneralRequest(
+          `https://api.spotify.com/v1/artists/${req.body.data.artistID}/top-tracks?country=US`,
+          null,
+          'get',
+          authorization,
+          (e, topTracksResponse, body) => {
+            if (!e && topTracksResponse.statusCode === 200) {
+              // Return the first artist we find, change this later
+              res.json({
+                success: true,
+                data: {
+                  generalAuth: authorization,
+                  tracks: body.tracks
+                }
+              });
+            } else {
+              res.status(body.error.status).json({ success: false, message: body.error.message, error: body.error });
+            }
+          }
+        );
+      } else {
+        const message = ENDPOINT_URI + ': API GET Request FAILED. See Response.';
+        res.json({ success: false, message, error: e });
+      }
+    });
+  });
 }
