@@ -70,3 +70,24 @@ body {
 .right-pad {
   padding-right: 5px;
 }
+
+/* 4K Display support */
+@media only screen and (min-width: 1997px) {
+  .ui.container {
+    width: 1927px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .ui.grid.container {
+    width: calc( 1927px  +  2rem ) !important;
+  }
+
+  .ui.relaxed.grid.container {
+    width: calc( 1927px  +  3rem ) !important;
+  }
+
+  .ui.very.relaxed.grid.container {
+    width: calc( 1927px  +  5rem ) !important;
+  }
+}
