@@ -36,9 +36,14 @@ body {
   text-decoration: underline;
 }
 
-.album-item {
+.album-item:not(:last-of-type), .track-item:not(:last-of-type) {
   transition: background-color 120ms;
-  border: 1px solid #eee;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.album-item:last-of-type, .track-item:last-of-type {
+  border-bottom: 1px solid #eee;
 }
 
 .album-item:hover {
@@ -56,19 +61,18 @@ body {
   background-color: #ddd;
 }
 
+/* Semantic UI Overrides */
 .no-padding {
   padding: 0 0 0 0 !important;
 }
 
-/*
- * Shared Page Styles
- */
-.lead {
-  font-size: 1.2em;
+.no-side-padding {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
-.right-pad {
-  padding-right: 5px;
+.no-margin {
+  margin: 0 0 0 0 !important;
 }
 
 /* 4K Display support */
@@ -90,4 +94,15 @@ body {
   .ui.very.relaxed.grid.container {
     width: calc( 1927px  +  5rem ) !important;
   }
+}
+
+/*
+ * Shared Page Styles
+ */
+ .lead {
+  font-size: 1.2em;
+}
+
+.right-pad {
+  padding-right: 5px;
 }

@@ -7,6 +7,22 @@ import ArtistCard from '../ArtistCard/ArtistCard';
 import TracksCard from '../TracksCard/TracksCard';
 import AlbumsCard from '../AlbumsCard/AlbumsCard';
 
+// Ported to ES6 from https://developer.mozilla.org/en-US/docs/Web/Events/resize
+const throttle = (type, name, object) => {
+  const obj = object || window;
+  let running = false;
+  const func = () => {
+    if (running) { return; }
+    running = true;
+    requestAnimationFrame(() => {
+      obj.dispatchEvent(new CustomEvent(name));
+      running = false;
+    });
+  };
+  obj.addEventListener(type, func);
+};
+throttle('resize', 'optimizedresize');
+
 class MainArtist extends React.Component {
   constructor(props) {
     super(props);
@@ -18,23 +34,11 @@ class MainArtist extends React.Component {
   }
 
   componentDidMount() {
-    // Ported to ES6 from https://developer.mozilla.org/en-US/docs/Web/Events/resize
-    const throttle = (type, name, object) => {
-      const obj = object || window;
-      let running = false;
-      const func = () => {
-        if (running) { return; }
-        running = true;
-        requestAnimationFrame(() => {
-          obj.dispatchEvent(new CustomEvent(name));
-          running = false;
-        });
-      };
-      obj.addEventListener(type, func);
-    };
-
-    throttle('resize', 'optimizedresize');
     window.addEventListener('optimizedresize', this.updateWidth);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('optimizedresize', this.updateWidth);
   }
 
   updateWidth(e) {

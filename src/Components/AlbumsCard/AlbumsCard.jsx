@@ -135,14 +135,14 @@ class AlbumsCard extends React.Component {
         <Card.Content>
           <Card.Header>Albums</Card.Header>
         </Card.Content>
-        <Card.Content>
+        <Card.Content className="no-margin">
           {this.state.loading &&
             <Dimmer active inverted>
               <Loader inverted>Loading Albums</Loader>
             </Dimmer>
           }
           {!this.state.loading &&
-            <Grid columns={2} divided>
+            <Grid className="no-margin" columns={2} divided>
               <Grid.Column className="no-padding">
                 <AlbumsList
                   albums={this.state.albums}

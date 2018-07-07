@@ -68,7 +68,7 @@ class TracksCard extends React.Component {
         <Card.Content>
           <Card.Header>Top Tracks</Card.Header>
         </Card.Content>
-        <Card.Content>
+        <Card.Content className="no-side-padding">
           {this.state.loading &&
             <Dimmer active inverted>
               <Loader inverted>Loading Top Tracks</Loader>

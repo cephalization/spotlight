@@ -13,7 +13,7 @@ const TracksList = ({ tracks, showAlbumInfo, emptyMessage }) => (
     style={styles}
   >
     {tracks.map((track, i) => (
-      <Feed.Event key={track.name}>
+      <Feed.Event className="track-item" key={track.name}>
         {showAlbumInfo
           ? <Feed.Label image={track.album.images[0].url} />
           : <Feed.Label>{i}</Feed.Label>
