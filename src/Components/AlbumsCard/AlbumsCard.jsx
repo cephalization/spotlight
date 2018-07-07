@@ -101,7 +101,10 @@ class AlbumsCard extends React.Component {
           saveGeneralAuth(response.data.data.generalAuth);
           this.setState({
             loading: false,
-            albums: response.data.data.albums,
+            albums: response.data.data.albums.sort((a, b) => (
+              Number.parseInt(a.release_date.slice(0, 4), 10) -
+              Number.parseInt(b.release_date.slice(0, 4), 10)
+            )).reverse(),
           });
         }).catch((error) => {
           this.setState({
@@ -145,12 +148,7 @@ class AlbumsCard extends React.Component {
             <Grid className="no-margin" columns={2} divided>
               <Grid.Column className="no-padding">
                 <AlbumsList
-                  albums={this.state.albums.sort((a, b) =>
-                    (
-                      Number.parseInt(a.release_date.slice(0, 4), 10) -
-                      Number.parseInt(b.release_date.slice(0, 4), 10)
-                    )).reverse()
-                  }
+                  albums={this.state.albums}
                   onSelect={this.albumSelected}
                   selectedAlbum={this.state.selectedAlbum}
                 />
