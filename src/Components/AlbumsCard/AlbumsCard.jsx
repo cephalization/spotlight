@@ -145,7 +145,12 @@ class AlbumsCard extends React.Component {
             <Grid className="no-margin" columns={2} divided>
               <Grid.Column className="no-padding">
                 <AlbumsList
-                  albums={this.state.albums}
+                  albums={this.state.albums.sort((a, b) =>
+                    (
+                      Number.parseInt(a.release_date.slice(0, 4), 10) -
+                      Number.parseInt(b.release_date.slice(0, 4), 10)
+                    )).reverse()
+                  }
                   onSelect={this.albumSelected}
                   selectedAlbum={this.state.selectedAlbum}
                 />

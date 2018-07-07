@@ -293,7 +293,7 @@ module.exports.RegisterRoutes = (router) => {
 
         // We have authorization from Spotify, query for the artist
         spotifyGeneralRequest(
-          `https://api.spotify.com/v1/artists/${req.body.data.artistID}/albums?market=US&limit=10&include_groups=album`,
+          `https://api.spotify.com/v1/artists/${req.body.data.artistID}/albums?market=US`,
           null,
           'get',
           authorization,

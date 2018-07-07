@@ -44,6 +44,16 @@ const AlbumsList = ({ albums, onSelect, selectedAlbum }) => (
             </a>
           </Feed.Extra>
           <Feed.Meta>
+            <Feed.Date>
+              {
+                album.album_group.replace(/_/g, ' ') === 'single'
+                  ? 'EP / single'
+                  : album.album_group.replace(/_/g, ' ')
+              }
+            </Feed.Date>
+          </Feed.Meta>
+          <br />
+          <Feed.Meta>
             <Feed.Date>{album.release_date}</Feed.Date>
           </Feed.Meta>
         </Feed.Content>
