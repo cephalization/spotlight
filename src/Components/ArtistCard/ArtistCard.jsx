@@ -24,6 +24,7 @@ const ArtistCard = ({
         style={{ backgroundColor: '#1DB954', color: '#FFF' }}
         href={_.get(artist, ['external_urls', 'spotify'], '/#')}
         disabled={_.get(artist, ['external_urls', 'spotify'], null) === null}
+        target="_blank"
       >
         <FontAwesomeIcon icon={['fab', 'spotify']} /> Artist&apos;s Spotify Profile
       </Button>

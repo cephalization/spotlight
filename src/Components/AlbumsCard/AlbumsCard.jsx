@@ -8,6 +8,7 @@ import { tracksEndpoint, albumsEndpoint } from '../../endpoints';
 import {
   saveGeneralAuth,
   loadGeneralAuth,
+  sortDate,
 } from '../../utils';
 
 const getInitState = () => ({
@@ -101,10 +102,8 @@ class AlbumsCard extends React.Component {
           saveGeneralAuth(response.data.data.generalAuth);
           this.setState({
             loading: false,
-            albums: response.data.data.albums.sort((a, b) => (
-              Number.parseInt(a.release_date.slice(0, 4), 10) -
-              Number.parseInt(b.release_date.slice(0, 4), 10)
-            )).reverse(),
+            // Sort the albums by date decending from newest
+            albums: response.data.data.albums.sort(sortDate).reverse(),
           });
         }).catch((error) => {
           this.setState({

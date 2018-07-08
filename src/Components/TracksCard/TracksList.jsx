@@ -1,5 +1,6 @@
 import React from 'react';
 import { Feed } from 'semantic-ui-react';
+import { toTimestamp } from '../../utils';
 
 const styles = {
   overflowY: 'auto',
@@ -16,7 +17,7 @@ const TracksList = ({ tracks, showAlbumInfo, emptyMessage }) => (
       <Feed.Event className="track-item" key={track.name}>
         {showAlbumInfo
           ? <Feed.Label image={track.album.images[0].url} />
-          : <Feed.Label>{i}</Feed.Label>
+          : <Feed.Label>{i + 1}</Feed.Label>
         }
         <Feed.Content>
           <Feed.Summary>
@@ -27,6 +28,7 @@ const TracksList = ({ tracks, showAlbumInfo, emptyMessage }) => (
             >
               {track.name}
             </a>
+            <Feed.Date>{toTimestamp(track.duration_ms)}</Feed.Date>
           </Feed.Summary>
           {showAlbumInfo &&
             <Feed.Extra>
