@@ -1,6 +1,8 @@
 const {
   getAppAuthorization,
-  spotifyGeneralRequest
+  spotifyGeneralRequest,
+  spotifyLoginRequest,
+  spotifyLoginCallback,
 } = require('./spotifyRequester');
 
 /**
@@ -29,6 +31,9 @@ const {
 const ENDPOINT_URI = '/spotify';
 
 module.exports.RegisterRoutes = (router) => {
+  router.get(ENDPOINT_URI + '/login', spotifyLoginRequest());
+
+  router.get(ENDPOINT_URI + '/callback', spotifyLoginCallback())
   /**
    * /api/spotify/artist-search endpoint
    *

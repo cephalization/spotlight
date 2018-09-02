@@ -1,6 +1,6 @@
 const express = require('express');
-const request = require('request');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const spotifyEndpoint = require('./spotifyEndpoint');
 
 const api = express();
@@ -20,6 +20,7 @@ const baseURL = process.env.API_BASE_URL == null
  * Apply Express Middlewares
  */
 api.use(bodyParser.json());
+api.use(cookieParser());
 api.use(bodyParser.urlencoded({
   extended: true
 }));

@@ -10,6 +10,7 @@ import {
 import LandingPage from './Pages/LandingPage/LandingPage';
 import ArtistPage from './Pages/ArtistPage/ArtistPage';
 import ErrorPage from './Pages/ErrorPage/ErrorPage';
+import withAuthProvider from './Contexts/Authentication';
 
 class ScrollToTop extends React.Component {
   componentDidUpdate(prevProps) {
@@ -30,12 +31,8 @@ ScrollToTop.propTypes = {
 
 const ScrollToTopOnRoute = withRouter(ScrollToTop);
 
-const baseURL = process.env.REACT_APP_BASE_URL != null
-  ? process.env.REACT_APP_BASE_URL
-  : '';
-
 const App = () => (
-  <Router basename={baseURL}>
+  <Router>
     <ScrollToTopOnRoute>
       <Responsive>
         <Switch>
@@ -48,4 +45,4 @@ const App = () => (
   </Router>
 );
 
-export default App;
+export default withAuthProvider(App);

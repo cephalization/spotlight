@@ -2,6 +2,10 @@ require('request');
 const fs = require('fs');
 const moment = require('moment');
 const request = require('request');
+const querystring = require('querystring');
+const REACT_APP_BASE_URL = (process.env.REACT_APP_BASE_URL != null && process.env.REACT_APP_BASE_URL.length)
+  ? process.env.REACT_APP_BASE_URL
+  : 'http://localhost:3000';
 
 // Generate authorization request information for a GENERAL token
 const {
@@ -109,5 +113,83 @@ function spotifyGeneralRequest(URL, QUERY, REQUEST_TYPE, AUTHENTICATION, callbac
   )
 }
 
+const spotifyStateKey = 'spotify_auth_state';
+
+function spotifyLoginRequest() {
+  /**
+   * Generates a random string containing numbers and letters
+   * @param  {number} length The length of the string
+   * @return {string} The generated string
+   */
+  const generateStateID = function(length) {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (var i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  };
+
+  return (req, res) => {
+    const state = generateStateID(16);
+    res.cookie(spotifyStateKey, state);
+
+    const loginScopes = 'user-read-private user-read-email';
+    const authorizationURI = 'https://accounts.spotify.com/authorize'
+    const authorizationParams = querystring.stringify({
+      response_type: 'code',
+      client_id: spotify_client_id,
+      scope: loginScopes,
+      redirect_uri: spotify_redirect_uri,
+      state,
+    })
+
+    res.redirect(`${authorizationURI}?${authorizationParams}`);
+  }
+}
+
+function spotifyLoginCallback() {
+  return (req, res) => {
+    console.log('in callback uri')
+    const code = req.query.code;
+    const state = req.query.state;
+    const storedState = req.cookies ? req.cookies[spotifyStateKey] : null;
+
+    if (state === null || state !== storedState) {
+      res.redirect(`${REACT_APP_BASE_URL}/error_state_mismatch`)
+    } else {
+      res.clearCookie(spotifyStateKey);
+
+      const authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form: {
+          code,
+          redirect_uri: spotify_redirect_uri,
+          grant_type: 'authorization_code',
+        },
+        headers: {
+          Authorization: `Basic ${(new Buffer(spotify_client_id + ':' + spotify_client_secret).toString('base64'))}`
+        },
+        json: true,
+      }
+
+      // Request tokens, return them to client
+      request.post(authOptions, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+          const access_token = body.access_token;
+          const refresh_token = body.refresh_token;
+
+          res.redirect(`${REACT_APP_BASE_URL}/success?${querystring.stringify({access_token, refresh_token})}`);
+        } else {
+          res.redirect(`${REACT_APP_BASE_URL}/error`)
+        }
+      });
+    }
+  }
+};
+
 module.exports.getAppAuthorization = requestAuthorization;
 module.exports.spotifyGeneralRequest = spotifyGeneralRequest;
+module.exports.spotifyLoginRequest = spotifyLoginRequest;
+module.exports.spotifyLoginCallback = spotifyLoginCallback;
