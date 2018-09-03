@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import axios from 'axios';
 import {
-  loginEndpoint,
+  loginEndpoint, userEndpoint,
 } from '../endpoints';
 
 export const AuthenticationContext = React.createContext();
@@ -23,7 +23,7 @@ const clearAuthenticationCookies = () => console.log('Will clear cookies upon im
    * onSuccess: Store user information, save cookie
    * onFailure: Wipe user information, clear cookies
    */
-const startLogin = () => axios.get(loginEndpoint);
+const startLogin = () => { window.location.href = loginEndpoint; };
 
 /**
  * Authentication Provider
@@ -36,15 +36,33 @@ class AuthenticationProvider extends React.Component {
     super(props);
 
     this.state = getInitialAuthState();
+    this.onAuthRedirect = this.onAuthRedirect.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
+  /**
+   * Parse query string params from URL, fetch spotify user, return promise
+   */
   onAuthRedirect() {
     const tokens = qs.parse(window.location.search);
 
-    this.setState({
-      accessToken: tokens.access_token,
-      refreshToken: tokens.refresh_token,
-    });
+    if (
+      tokens.access_token &&
+      tokens.refresh_token
+    ) {
+      axios.get(userEndpoint, {
+        headers: {
+          Authorization: `Bearer ${tokens.access_token}`,
+        },
+      }).then((response) => {
+        this.setState({
+          accessToken: tokens.access_token,
+          refreshToken: tokens.refresh_token,
+          user: response.data.data.user,
+          isLoggedIn: true,
+        });
+      }).catch(() => this.setState(getInitialAuthState()));
+    }
   }
 
   /**
@@ -61,6 +79,7 @@ class AuthenticationProvider extends React.Component {
       ...this.state,
       login: startLogin,
       logout: this.logout,
+      onAuthRedirect: this.onAuthRedirect,
     };
 
     return (

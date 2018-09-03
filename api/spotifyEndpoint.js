@@ -2,6 +2,7 @@ const {
   getAppAuthorization,
   spotifyGeneralRequest,
   spotifyLoginRequest,
+  spotifyAuthRequest,
   spotifyLoginCallback,
 } = require('./spotifyRequester');
 
@@ -34,6 +35,36 @@ module.exports.RegisterRoutes = (router) => {
   router.get(ENDPOINT_URI + '/login', spotifyLoginRequest());
 
   router.get(ENDPOINT_URI + '/callback', spotifyLoginCallback())
+
+  router.get(ENDPOINT_URI + '/user', async (req, res) => {
+    const auth = req.get('authorization');
+    if (auth != null) {
+      const message = ENDPOINT_URI + ': API GET Request Received with auth.';
+
+      spotifyAuthRequest(
+        'https://api.spotify.com/v1/me',
+        auth,
+        null,
+        'get',
+        (e, response, body) => {
+          if (!e && response.statusCode === 200) {
+            res.json({
+              success: true,
+              data: {
+                user: body,
+              }
+            });
+          } else {
+            const message = ENDPOINT_URI + ': API GET Request FAILED. See Response.';
+            res.status(body.error.status).json({ success: false, message, error: e})
+          }
+        }
+      )
+    } else {
+      const message = ENDPOINT_URI + ': API GET Request FAILED. See Response.';
+      res.status(message.statusCode).json({ success: false, message, error: e });
+    }
+  });
   /**
    * /api/spotify/artist-search endpoint
    *

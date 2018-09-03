@@ -6,7 +6,6 @@ import PageHeader from '../../Components/PageHeader/PageHeader';
 import PageFooter from '../../Components/PageFooter/PageFooter';
 import ContentSegment from '../../Components/ContentSegment/ContentSegment';
 import ArtistSearchBar from '../../Components/SearchBar/ArtistSearchBar';
-import { loginEndpoint } from '../../endpoints';
 
 const LandingPage = ({ history }) => (
   <div>
@@ -60,7 +59,6 @@ const LandingPage = ({ history }) => (
           of Spotlight!
         </p>
         <Button disabled primary>Create account</Button>
-        <a href={loginEndpoint}>Login Test</a>
       </ContentSegment>
     </ContentSegment>
     <PageFooter />

@@ -1,7 +1,10 @@
 import React from 'react';
-import { Header, Container, Segment } from 'semantic-ui-react';
+import { Header, Container, Segment, Menu, Image } from 'semantic-ui-react';
+import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { loginEndpoint } from '../../endpoints';
+import { withAuth } from '../../Contexts/Authentication';
 
 const styles = {
   headerSegment: {
@@ -18,7 +21,7 @@ const styles = {
 /**
  * Main Page Header and Brand
  */
-const PageHeader = () => (
+const PageHeader = ({ user, logout }) => (
   <Segment
     vertical
     textAlign="center"
@@ -33,7 +36,23 @@ const PageHeader = () => (
         <Link className="hero" to="/"><FontAwesomeIcon icon="search" /> Spotlight</Link>
       </Header>
     </Container>
+    <Container className="top-pad">
+      <Menu inverted borderless fluid>
+        {user !== null
+            ? <Menu.Item><Image size="mini" circular src={_.get(user, ['images', 0, 'url'], '')} /></Menu.Item>
+            : null
+        }
+        {user !== null
+          ? <Menu.Item>{user.id}</Menu.Item>
+          : <Menu.Item as="a" href={loginEndpoint}>Login</Menu.Item>
+        }
+        {user !== null
+            ? <Menu.Item onClick={logout}>Logout</Menu.Item>
+            : null
+        }
+      </Menu>
+    </Container>
   </Segment>
 );
 
-export default PageHeader;
+export default withAuth(PageHeader);

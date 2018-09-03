@@ -113,6 +113,20 @@ function spotifyGeneralRequest(URL, QUERY, REQUEST_TYPE, AUTHENTICATION, callbac
   )
 }
 
+function spotifyAuthRequest(URL, AUTH_HEADER, QUERY, REQUEST_TYPE, callback) {
+  const requestConfig = {
+    url: `${URL}${QUERY != null ? '?' + QUERY : ''}`,
+    headers: { Authorization: AUTH_HEADER },
+    json: true
+  };
+  request[REQUEST_TYPE](
+    requestConfig,
+    (e, response, body) => {
+      callback(e, response, body);
+    }
+  )
+}
+
 const spotifyStateKey = 'spotify_auth_state';
 
 function spotifyLoginRequest() {
@@ -151,7 +165,6 @@ function spotifyLoginRequest() {
 
 function spotifyLoginCallback() {
   return (req, res) => {
-    console.log('in callback uri')
     const code = req.query.code;
     const state = req.query.state;
     const storedState = req.cookies ? req.cookies[spotifyStateKey] : null;
@@ -191,5 +204,6 @@ function spotifyLoginCallback() {
 
 module.exports.getAppAuthorization = requestAuthorization;
 module.exports.spotifyGeneralRequest = spotifyGeneralRequest;
+module.exports.spotifyAuthRequest = spotifyAuthRequest;
 module.exports.spotifyLoginRequest = spotifyLoginRequest;
 module.exports.spotifyLoginCallback = spotifyLoginCallback;
