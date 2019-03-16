@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage/LandingPage';
 import ArtistPage from './Pages/ArtistPage/ArtistPage';
+import StatsPage from './Pages/StatsPage/StatsPage';
 import ErrorPage from './Pages/ErrorPage/ErrorPage';
 import withAuthProvider from './Contexts/Authentication';
 import LoginHandler from './Components/LoginHandler/LoginHandler';
@@ -34,6 +35,7 @@ const App = () => (
       <Responsive>
         <Switch>
           <Route exact path="/" component={LandingPage} />
+          <Route exact path="/profile" component={StatsPage} />
           <Route path="/artist/:artistname" component={ArtistPage} />
           <Route path="/success" component={LoginHandler} />
           <Route component={ErrorPage} />

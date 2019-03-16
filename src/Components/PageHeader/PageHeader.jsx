@@ -77,25 +77,35 @@ class PageHeader extends React.Component {
         </div>
         <Container className="top-pad">
           <Menu inverted borderless fluid fixed={sticky ? 'top' : null}>
-            {this.props.user !== null ? (
-              <Menu.Item>
-                <Image
-                  size="mini"
-                  circular
-                  src={_.get(this.props.user, ['images', 0, 'url'], '')}
-                />
-              </Menu.Item>
-            ) : null}
-            {this.props.user !== null ? (
-              <Menu.Item>{this.props.user.id}</Menu.Item>
-            ) : (
-              <Menu.Item as="a" href={loginEndpoint}>
-                Login
-              </Menu.Item>
-            )}
-            {this.props.user !== null ? (
-              <Menu.Item onClick={this.props.logout}>Logout</Menu.Item>
-            ) : null}
+            <Container>
+              {this.props.user !== null ? (
+                <Menu.Item>
+                  <Image
+                    size="mini"
+                    circular
+                    src={_.get(this.props.user, ['images', 0, 'url'], '')}
+                  />
+                </Menu.Item>
+              ) : null}
+              {this.props.user !== null ? (
+                <React.Fragment>
+                  <Menu.Item>{this.props.user.id}</Menu.Item>
+                  <Menu.Item as={Link} to="/profile">
+                    Profile Statistics
+                  </Menu.Item>
+
+                  <Menu.Menu position="right">
+                    <Menu.Item onClick={this.props.logout}>Logout</Menu.Item>
+                  </Menu.Menu>
+                </React.Fragment>
+              ) : (
+                <Menu.Menu position="right">
+                  <Menu.Item as="a" href={loginEndpoint}>
+                    Login
+                  </Menu.Item>
+                </Menu.Menu>
+              )}
+            </Container>
           </Menu>
         </Container>
       </Segment>
