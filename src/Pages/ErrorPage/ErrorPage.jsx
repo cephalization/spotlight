@@ -10,7 +10,11 @@ const ErrorPage = () => (
     <PageHeader />
     <ContentSegment>
       <Header as="h1">Oops! Couldn&apos;t find this page.</Header>
-      <Header size="small"><Link className="error" to="/">Go back home</Link></Header>
+      <Header size="small">
+        <Link className="error" to="/">
+          Go back home
+        </Link>
+      </Header>
     </ContentSegment>
     <PageFooter />
   </div>

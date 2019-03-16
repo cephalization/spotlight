@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import SearchBar from './SearchBar';
 import { artistSearchEndpoint } from '../../endpoints';
-import {
-  saveGeneralAuth,
-  loadGeneralAuth,
-} from '../../utils';
+import { saveGeneralAuth, loadGeneralAuth } from '../../utils';
 
 const getInitState = () => ({
   loading: false,
@@ -27,26 +24,26 @@ class ArtistSearchBar extends React.Component {
    * @param {String} query user's search input for artist name (will be sanitized on server)
    */
   handleArtistSearchRequest(query) {
-    axios.post(
-      artistSearchEndpoint,
-      {
+    axios
+      .post(artistSearchEndpoint, {
         data: {
           artistQuery: query,
           generalAuth: loadGeneralAuth(),
         },
-      },
-    ).then((response) => {
-      saveGeneralAuth(response.data.data.generalAuth);
-      this.setState({ loading: false });
-      this.props.history.push(`/artist/${response.data.data.artist.id}`);
-    }).catch((error) => {
-      this.setState({
-        ...getInitState(),
-        loading: false,
-        errors: this.state.errors, // keep page errors when wiping the state
+      })
+      .then((response) => {
+        saveGeneralAuth(response.data.data.generalAuth);
+        this.setState({ loading: false });
+        this.props.history.push(`/artist/${response.data.data.artist.id}`);
+      })
+      .catch((error) => {
+        this.setState({
+          ...getInitState(),
+          loading: false,
+          errors: this.state.errors, // keep page errors when wiping the state
+        });
+        this.props.onError(error, 'An error occured searching for that artist...');
       });
-      this.props.onError(error, 'An error occured searching for that artist...');
-    });
   }
 
   render() {

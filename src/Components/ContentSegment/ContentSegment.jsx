@@ -20,9 +20,7 @@ const styles = {
  */
 const ContentSegment = ({ children }) => (
   <Segment vertical style={styles.segment}>
-    <Container style={styles.container}>
-      {children}
-    </Container>
+    <Container style={styles.container}>{children}</Container>
   </Segment>
 );
 

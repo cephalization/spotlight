@@ -7,16 +7,11 @@ const styles = {
   minHeight: '400px',
 };
 
-const selectFunction = (onClick, current, selected) => (
-  current !== selected
-    ? () => onClick(current)
-    : () => onClick('')
-);
+const selectFunction = (onClick, current, selected) =>
+  (current !== selected ? () => onClick(current) : () => onClick(''));
 
 const AlbumsList = ({ albums, onSelect, selectedAlbum }) => (
-  <Feed
-    style={styles}
-  >
+  <Feed style={styles}>
     {albums.map(album => (
       <Feed.Event
         onClick={selectFunction(onSelect, album.id, selectedAlbum)}
@@ -26,11 +21,7 @@ const AlbumsList = ({ albums, onSelect, selectedAlbum }) => (
         <Feed.Label image={album.images[0].url} />
         <Feed.Content>
           <Feed.Summary>
-            <a
-              className="spotify-link"
-              href={album.external_urls.spotify}
-              target="_blank"
-            >
+            <a className="spotify-link" href={album.external_urls.spotify} target="_blank">
               {album.name}
             </a>
           </Feed.Summary>
@@ -45,11 +36,9 @@ const AlbumsList = ({ albums, onSelect, selectedAlbum }) => (
           </Feed.Extra>
           <Feed.Meta>
             <Feed.Date>
-              {
-                album.album_group.replace(/_/g, ' ') === 'single'
-                  ? 'EP / single'
-                  : album.album_group.replace(/_/g, ' ')
-              }
+              {album.album_group.replace(/_/g, ' ') === 'single'
+                ? 'EP / single'
+                : album.album_group.replace(/_/g, ' ')}
             </Feed.Date>
           </Feed.Meta>
           <br />
@@ -59,14 +48,13 @@ const AlbumsList = ({ albums, onSelect, selectedAlbum }) => (
         </Feed.Content>
       </Feed.Event>
     ))}
-    {
-      albums.length === 0 &&
+    {albums.length === 0 && (
       <Feed.Event>
         <Feed.Content>
           <Feed.Summary>No albums available</Feed.Summary>
         </Feed.Content>
       </Feed.Event>
-    }
+    )}
   </Feed>
 );
 

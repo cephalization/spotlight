@@ -5,11 +5,7 @@ import { Card, Grid, Dimmer, Loader } from 'semantic-ui-react';
 import TracksList from '../TracksCard/TracksList';
 import AlbumsList from './AlbumsList';
 import { tracksEndpoint, albumsEndpoint } from '../../endpoints';
-import {
-  saveGeneralAuth,
-  loadGeneralAuth,
-  sortDate,
-} from '../../utils';
+import { saveGeneralAuth, loadGeneralAuth, sortDate } from '../../utils';
 
 const getInitState = () => ({
   tracks: [],
@@ -29,18 +25,12 @@ class AlbumsCard extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     // Make request for Albums
-    if (
-      this.props.artistID !== '' &&
-      this.props.artistID !== prevProps.artistID
-    ) {
+    if (this.props.artistID !== '' && this.props.artistID !== prevProps.artistID) {
       this.handleAlbumsRequest(this.props.artistID);
     }
 
     // Make request for album tracks
-    if (
-      this.state.selectedAlbum !== '' &&
-      this.state.selectedAlbum !== prevState.selectedAlbum
-    ) {
+    if (this.state.selectedAlbum !== '' && this.state.selectedAlbum !== prevState.selectedAlbum) {
       this.handleTracksRequest(this.state.selectedAlbum);
     }
 
@@ -58,61 +48,55 @@ class AlbumsCard extends React.Component {
   }
 
   handleTracksRequest(albumID) {
-    this.setState(
-      { tracksLoading: true },
-      () =>
-        axios.post(
-          tracksEndpoint,
-          {
-            data: {
-              albumID,
-              generalAuth: loadGeneralAuth(),
-            },
+    this.setState({ tracksLoading: true }, () =>
+      axios
+        .post(tracksEndpoint, {
+          data: {
+            albumID,
+            generalAuth: loadGeneralAuth(),
           },
-        ).then((response) => {
+        })
+        .then((response) => {
           saveGeneralAuth(response.data.data.generalAuth);
           this.setState({
             tracksLoading: false,
             tracks: response.data.data.tracks,
           });
-        }).catch((error) => {
+        })
+        .catch((error) => {
           this.setState({
             tracks: [],
             tracksLoading: false,
             selectedAlbum: '',
           });
           this.props.onError(error, 'An error occured searching for albums...');
-        }),
-    );
+        }));
   }
 
   handleAlbumsRequest(artistID) {
-    this.setState(
-      { loading: true },
-      () =>
-        axios.post(
-          albumsEndpoint,
-          {
-            data: {
-              artistID,
-              generalAuth: loadGeneralAuth(),
-            },
+    this.setState({ loading: true }, () =>
+      axios
+        .post(albumsEndpoint, {
+          data: {
+            artistID,
+            generalAuth: loadGeneralAuth(),
           },
-        ).then((response) => {
+        })
+        .then((response) => {
           saveGeneralAuth(response.data.data.generalAuth);
           this.setState({
             loading: false,
             // Sort the albums by date decending from newest
             albums: response.data.data.albums.sort(sortDate).reverse(),
           });
-        }).catch((error) => {
+        })
+        .catch((error) => {
           this.setState({
             ...getInitState(),
             loading: false,
           });
           this.props.onError(error, 'An error occured searching for albums...');
-        }),
-    );
+        }));
   }
 
   albumSelected(albumID) {
@@ -138,12 +122,12 @@ class AlbumsCard extends React.Component {
           <Card.Header>Albums</Card.Header>
         </Card.Content>
         <Card.Content className="no-margin">
-          {this.state.loading &&
+          {this.state.loading && (
             <Dimmer active inverted>
               <Loader inverted>Loading Albums</Loader>
             </Dimmer>
-          }
-          {!this.state.loading &&
+          )}
+          {!this.state.loading && (
             <Grid className="no-margin" columns={2} divided>
               <Grid.Column className="no-padding">
                 <AlbumsList
@@ -160,7 +144,7 @@ class AlbumsCard extends React.Component {
                 />
               </Grid.Column>
             </Grid>
-          }
+          )}
         </Card.Content>
       </Card>
     );

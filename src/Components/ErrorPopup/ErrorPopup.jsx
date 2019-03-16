@@ -22,14 +22,18 @@ class ErrorPopup extends React.Component {
    * Show this popup .5 seconds after it is mounted
    */
   showPopupAfterMounting() {
-    setTimeout(() => { this.setState({ visible: true }); }, 500);
+    setTimeout(() => {
+      this.setState({ visible: true });
+    }, 500);
   }
 
   /**
    * Hide this popup after 6.5 seconds
    */
   hidePopupAfterInactivity() {
-    setTimeout(() => { this.setState({ visible: false }); }, 6500);
+    setTimeout(() => {
+      this.setState({ visible: false });
+    }, 6500);
   }
 
   render() {
@@ -43,7 +47,7 @@ class ErrorPopup extends React.Component {
     };
 
     // Line ErrorPopups below each other if there is more than one
-    styles.top = `${10 + (77 * index)}px`;
+    styles.top = `${10 + 77 * index}px`;
 
     return (
       <Transition visible={this.state.visible} animation="scale" duration={500}>

@@ -7,28 +7,25 @@ import { Link } from 'react-router-dom';
 import notFound from '../../Images/imagenotfound.png';
 
 const ArtistCard = ({
-  loading,
-  artist,
-  search,
-  compact,
-  width,
-  ...props
+  loading, artist, search, compact, width, ...props
 }) => {
   const image = loading ? notFound : _.get(artist, ['images', 0, 'url'], notFound);
-  const artistName = loading ? `Searching for ${search}...` : _.get(artist, 'name', 'Artist Not Found!');
+  const artistName = loading
+    ? `Searching for ${search}...`
+    : _.get(artist, 'name', 'Artist Not Found!');
   const genres = loading ? [] : _.get(artist, 'genres', []);
-  const link = loading
-    ? 'Loading artist information...'
-    : (
-      <Button
-        style={{ backgroundColor: '#1DB954', color: '#FFF' }}
-        href={_.get(artist, ['external_urls', 'spotify'], '/#')}
-        disabled={_.get(artist, ['external_urls', 'spotify'], null) === null}
-        target="_blank"
-      >
-        <FontAwesomeIcon icon={['fab', 'spotify']} /> Artist&apos;s Spotify Profile
-      </Button>
-    );
+  const link = loading ? (
+    'Loading artist information...'
+  ) : (
+    <Button
+      style={{ backgroundColor: '#1DB954', color: '#FFF' }}
+      href={_.get(artist, ['external_urls', 'spotify'], '/#')}
+      disabled={_.get(artist, ['external_urls', 'spotify'], null) === null}
+      target="_blank"
+    >
+      <FontAwesomeIcon icon={['fab', 'spotify']} /> Artist&apos;s Spotify Profile
+    </Button>
+  );
   const followers = loading ? 'Loading' : _.get(artist, ['followers', 'total'], 'N/A');
   const compactProps = {
     floated: 'right',
@@ -55,16 +52,20 @@ const ArtistCard = ({
       <Card.Content>
         {compact ? <Image src={image} {...compactProps} /> : null}
         <Card.Header>
-          {!compact ? artistName : <Link className="spotify-link" to={`/artist/${artist.id}`}>{artistName}</Link> }
+          {!compact ? (
+            artistName
+          ) : (
+            <Link className="spotify-link" to={`/artist/${artist.id}`}>
+              {artistName}
+            </Link>
+          )}
         </Card.Header>
         <Card.Meta>
           <span className="date">
             {compact ? genres.join(', ') : genres.filter((v, i) => i < 3).join(', ')}
           </span>
         </Card.Meta>
-        <Card.Description>
-          {link}
-        </Card.Description>
+        <Card.Description>{link}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Icon name="user" />

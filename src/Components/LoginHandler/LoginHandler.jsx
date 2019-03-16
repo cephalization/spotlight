@@ -14,15 +14,13 @@ class LoginHandler extends React.Component {
   render() {
     const { isLoggedIn } = this.props;
 
-    return isLoggedIn
-      ? (
-        <Redirect
-          to={{
-            pathname: '/',
-          }}
-        />
-      )
-      : null;
+    return isLoggedIn ? (
+      <Redirect
+        to={{
+          pathname: '/',
+        }}
+      />
+    ) : null;
   }
 }
 

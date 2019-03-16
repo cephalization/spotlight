@@ -12,7 +12,9 @@ const throttle = (type, name, object) => {
   const obj = object || window;
   let running = false;
   const func = () => {
-    if (running) { return; }
+    if (running) {
+      return;
+    }
     running = true;
     requestAnimationFrame(() => {
       obj.dispatchEvent(new CustomEvent(name));
@@ -47,10 +49,7 @@ class MainArtist extends React.Component {
 
   render() {
     const {
-      artist,
-      loading,
-      query,
-      onError,
+      artist, loading, query, onError,
     } = this.props;
 
     const width = this.state.width || window.innerWidth;
@@ -61,24 +60,12 @@ class MainArtist extends React.Component {
           <Grid.Row stretched>
             <Grid.Column width={8}>
               <Card.Group itemsPerRow={2} stackable>
-                <ArtistCard
-                  loading={loading}
-                  artist={artist}
-                  search={query}
-                  width={width}
-                />
-                <TracksCard
-                  artistID={_.get(artist, 'id', '')}
-                  onError={onError}
-                  width={width}
-                />
+                <ArtistCard loading={loading} artist={artist} search={query} width={width} />
+                <TracksCard artistID={_.get(artist, 'id', '')} onError={onError} width={width} />
               </Card.Group>
             </Grid.Column>
             <Grid.Column width={8}>
-              <AlbumsCard
-                artistID={_.get(artist, 'id', '')}
-                onError={onError}
-              />
+              <AlbumsCard artistID={_.get(artist, 'id', '')} onError={onError} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

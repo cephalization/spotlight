@@ -6,17 +6,12 @@ import ContentSegment from '../ContentSegment/ContentSegment';
 import LoaderCard from '../Loaders/LoaderCard';
 import ArtistCard from '../ArtistCard/ArtistCard';
 import { relatedArtistsEndpoint } from '../../endpoints';
-import {
-  saveGeneralAuth,
-  loadGeneralAuth,
-} from '../../utils';
+import { saveGeneralAuth, loadGeneralAuth } from '../../utils';
 
-const getInitState = () => (
-  {
-    artists: [],
-    loading: true,
-  }
-);
+const getInitState = () => ({
+  artists: [],
+  loading: true,
+});
 
 class RelatedArtists extends React.Component {
   constructor() {
@@ -49,51 +44,47 @@ class RelatedArtists extends React.Component {
    * @param {String} artistID artist id from spotify artist response
    */
   handleRelatedArtistsRequest(artistID) {
-    axios.post(
-      relatedArtistsEndpoint,
-      {
+    axios
+      .post(relatedArtistsEndpoint, {
         data: {
           artistID,
           generalAuth: loadGeneralAuth(),
         },
-      },
-    ).then((response) => {
-      saveGeneralAuth(response.data.data.generalAuth);
-      this.setState({
-        loading: false,
-        artists: response.data.data.artists,
+      })
+      .then((response) => {
+        saveGeneralAuth(response.data.data.generalAuth);
+        this.setState({
+          loading: false,
+          artists: response.data.data.artists,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          ...getInitState(),
+          loading: false,
+        });
+        this.props.onError(error, 'An error occured searching for related artists...');
       });
-    }).catch((error) => {
-      this.setState({
-        ...getInitState(),
-        loading: false,
-      });
-      this.props.onError(error, 'An error occured searching for related artists...');
-    });
   }
 
   render() {
     return (
       <ContentSegment>
         <Header as="h3">Related Artists</Header>
-        {
-          // TODO: Clean this up, pure components with default props would be better
-          // If the component is loading, show the loading cards
-          // When it is done, show the artist cards or a 'not found' message
-          this.state.loading
-            ? <LoaderCard numCards={4} text="Loading Related Artists..." />
-            : (
-              <Card.Group stackable centered itemsPerRow={2}>
-                {
-                  this.state.artists.length
-                  ? this.state.artists.map(artist =>
-                      (<ArtistCard key={artist.name} artist={artist} compact />
-                    ))
-                  : 'No related artists found.'
-                }
-              </Card.Group>
-            )
-        }
+        {// TODO: Clean this up, pure components with default props would be better
+        // If the component is loading, show the loading cards
+        // When it is done, show the artist cards or a 'not found' message
+        this.state.loading ? (
+          <LoaderCard numCards={4} text="Loading Related Artists..." />
+        ) : (
+          <Card.Group stackable centered itemsPerRow={2}>
+            {this.state.artists.length
+              ? this.state.artists.map(artist => (
+                <ArtistCard key={artist.name} artist={artist} compact />
+                ))
+              : 'No related artists found.'}
+          </Card.Group>
+        )}
       </ContentSegment>
     );
   }

@@ -10,48 +10,38 @@ const styles = {
 };
 
 const TracksList = ({ tracks, showAlbumInfo, emptyMessage }) => (
-  <Feed
-    style={styles}
-  >
+  <Feed style={styles}>
     {tracks.map((track, i) => (
       <Feed.Event className="track-item" key={track.name}>
-        {showAlbumInfo
-          ? <Feed.Label image={track.album.images[0].url} />
-          : <Feed.Label>{i + 1}</Feed.Label>
-        }
+        {showAlbumInfo ? (
+          <Feed.Label image={track.album.images[0].url} />
+        ) : (
+          <Feed.Label>{i + 1}</Feed.Label>
+        )}
         <Feed.Content>
           <Feed.Summary>
-            <a
-              className="spotify-link"
-              href={track.external_urls.spotify}
-              target="_blank"
-            >
+            <a className="spotify-link" href={track.external_urls.spotify} target="_blank">
               {track.name}
             </a>
             <Feed.Date>{toTimestamp(track.duration_ms)}</Feed.Date>
           </Feed.Summary>
-          {showAlbumInfo &&
+          {showAlbumInfo && (
             <Feed.Extra>
-              <a
-                className="spotify-link"
-                href={track.album.external_urls.spotify}
-                target="_blank"
-              >
+              <a className="spotify-link" href={track.album.external_urls.spotify} target="_blank">
                 {track.album.name}
               </a>
             </Feed.Extra>
-          }
+          )}
         </Feed.Content>
       </Feed.Event>
     ))}
-    {
-      tracks.length === 0 &&
+    {tracks.length === 0 && (
       <Feed.Event>
         <Feed.Content>
           <Feed.Summary>{emptyMessage}</Feed.Summary>
         </Feed.Content>
       </Feed.Event>
-    }
+    )}
   </Feed>
 );
 

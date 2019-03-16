@@ -18,9 +18,10 @@ const styles = {
   },
 };
 
-const getElementWindowTop = elem => (
-  elem && typeof elem.getBoundingClientRect === 'function' ? elem.getBoundingClientRect().top - document.body.getBoundingClientRect().top : 0
-);
+const getElementWindowTop = elem =>
+  (elem && typeof elem.getBoundingClientRect === 'function'
+    ? elem.getBoundingClientRect().top - document.body.getBoundingClientRect().top
+    : 0);
 
 /**
  * Main Page Header and Brand
@@ -53,10 +54,7 @@ class PageHeader extends React.Component {
     const elementTop = getElementWindowTop(hero);
     const elementBottom = elementTop + hero.clientHeight;
 
-    if (
-      elementBottom < window.scrollY
-      || elementTop >= (window.scrollY + window.innerHeight)
-    ) {
+    if (elementBottom < window.scrollY || elementTop >= window.scrollY + window.innerHeight) {
       this.setState({ sticky: true });
     } else if (this.state.sticky) {
       this.setState({ sticky: false });
@@ -71,27 +69,38 @@ class PageHeader extends React.Component {
         <div ref={this.hero}>
           <Container text>
             <Header inverted as="h1" style={styles.headerBrand}>
-              <Link className="hero" to="/"><FontAwesomeIcon icon="search" /> Spotlight</Link>
+              <Link className="hero" to="/">
+                <FontAwesomeIcon icon="search" /> Spotlight
+              </Link>
             </Header>
           </Container>
         </div>
         <Container className="top-pad">
           <Menu inverted borderless fluid fixed={sticky ? 'top' : null}>
-            {this.props.user !== null ?
-              <Menu.Item><Image size="mini" circular src={_.get(this.props.user, ['images', 0, 'url'], '')} /></Menu.Item> : null
-            }
-            {this.props.user !== null ?
-              <Menu.Item>{this.props.user.id}</Menu.Item> : <Menu.Item as="a" href={loginEndpoint}>Login</Menu.Item>
-            }
-            {this.props.user !== null ?
-              <Menu.Item onClick={this.props.logout}>Logout</Menu.Item> : null
-            }
+            {this.props.user !== null ? (
+              <Menu.Item>
+                <Image
+                  size="mini"
+                  circular
+                  src={_.get(this.props.user, ['images', 0, 'url'], '')}
+                />
+              </Menu.Item>
+            ) : null}
+            {this.props.user !== null ? (
+              <Menu.Item>{this.props.user.id}</Menu.Item>
+            ) : (
+              <Menu.Item as="a" href={loginEndpoint}>
+                Login
+              </Menu.Item>
+            )}
+            {this.props.user !== null ? (
+              <Menu.Item onClick={this.props.logout}>Logout</Menu.Item>
+            ) : null}
           </Menu>
         </Container>
       </Segment>
     );
   }
-
 }
 
 export default withAuth(PageHeader);

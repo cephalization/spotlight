@@ -4,10 +4,7 @@ import axios from 'axios';
 import { Card, Dimmer, Loader } from 'semantic-ui-react';
 import TracksList from './TracksList';
 import { topTracksEndpoint } from '../../endpoints';
-import {
-  saveGeneralAuth,
-  loadGeneralAuth,
-} from '../../utils';
+import { saveGeneralAuth, loadGeneralAuth } from '../../utils';
 
 const getInitState = () => ({
   tracks: [],
@@ -23,10 +20,7 @@ class TracksCard extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.artistID !== '' &&
-      this.props.artistID !== prevProps.artistID
-    ) {
+    if (this.props.artistID !== '' && this.props.artistID !== prevProps.artistID) {
       this.handleTopTracksRequest(this.props.artistID);
     }
 
@@ -38,27 +32,27 @@ class TracksCard extends React.Component {
   }
 
   handleTopTracksRequest(artistID) {
-    axios.post(
-      topTracksEndpoint,
-      {
+    axios
+      .post(topTracksEndpoint, {
         data: {
           artistID,
           generalAuth: loadGeneralAuth(),
         },
-      },
-    ).then((response) => {
-      saveGeneralAuth(response.data.data.generalAuth);
-      this.setState({
-        loading: false,
-        tracks: response.data.data.tracks,
+      })
+      .then((response) => {
+        saveGeneralAuth(response.data.data.generalAuth);
+        this.setState({
+          loading: false,
+          tracks: response.data.data.tracks,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          ...getInitState(),
+          loading: false,
+        });
+        this.props.onError(error, 'An error occured searching for top tracks...');
       });
-    }).catch((error) => {
-      this.setState({
-        ...getInitState(),
-        loading: false,
-      });
-      this.props.onError(error, 'An error occured searching for top tracks...');
-    });
   }
 
   render() {
@@ -69,11 +63,11 @@ class TracksCard extends React.Component {
           <Card.Header>Top Tracks</Card.Header>
         </Card.Content>
         <Card.Content className="no-side-padding">
-          {this.state.loading &&
+          {this.state.loading && (
             <Dimmer active inverted>
               <Loader inverted>Loading Top Tracks</Loader>
             </Dimmer>
-          }
+          )}
           {!this.state.loading && <TracksList tracks={this.state.tracks} />}
         </Card.Content>
       </Card>

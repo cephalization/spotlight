@@ -1,12 +1,7 @@
 import { Responsive } from 'semantic-ui-react';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  withRouter,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage/LandingPage';
 import ArtistPage from './Pages/ArtistPage/ArtistPage';
 import ErrorPage from './Pages/ErrorPage/ErrorPage';
@@ -28,11 +23,7 @@ class ScrollToTop extends React.Component {
 
 ScrollToTop.propTypes = {
   children: PropTypes.node.isRequired,
-  location: PropTypes.objectOf(PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-    PropTypes.object,
-  ])).isRequired,
+  location: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.object])).isRequired,
 };
 
 const ScrollToTopOnRoute = withRouter(ScrollToTop);

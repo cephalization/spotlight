@@ -9,32 +9,25 @@ import { withAuth } from '../../Contexts/Authentication';
  *
  * @param {object} props destructured react props
  */
-const PrivateRoute = ({
-  component: Component,
-  isLoggedIn,
-  ...rest
-}) => (
+const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => (
   <Route
     {...rest}
-    render={
-      (props) => {
-        if (isLoggedIn) {
-          return <Component {...props} />;
-        }
-
-        return (
-          <Redirect to={
-            {
-              pathname: '/',
-              state: {
-                error: 'Must be logged in to access that page!',
-              },
-            }
-          }
-          />
-      );
+    render={(props) => {
+      if (isLoggedIn) {
+        return <Component {...props} />;
       }
-    }
+
+      return (
+        <Redirect
+          to={{
+            pathname: '/',
+            state: {
+              error: 'Must be logged in to access that page!',
+            },
+          }}
+        />
+      );
+    }}
   />
 );
 
