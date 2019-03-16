@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Header, Button } from 'semantic-ui-react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import PageHeader from '../../Components/PageHeader/PageHeader';
@@ -7,12 +6,12 @@ import PageFooter from '../../Components/PageFooter/PageFooter';
 import ContentSegment from '../../Components/ContentSegment/ContentSegment';
 import ArtistSearchBar from '../../Components/SearchBar/ArtistSearchBar';
 
-const LandingPage = ({ history }) => (
+const LandingPage = () => (
   <div>
     <PageHeader />
     <ContentSegment>
       <Header as="h2">Search for an artist, see what they&apos;re up to</Header>
-      <ArtistSearchBar history={history} />
+      <ArtistSearchBar />
       <ContentSegment>
         <Header as="h2">What can Spotlight do?</Header>
         <p className="lead">
@@ -60,11 +59,5 @@ const LandingPage = ({ history }) => (
     <PageFooter />
   </div>
 );
-
-LandingPage.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
 
 export default LandingPage;

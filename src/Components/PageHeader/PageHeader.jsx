@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { loginEndpoint } from '../../endpoints';
 import { withAuth } from '../../Contexts/Authentication';
+import ArtistSearchBar from '../SearchBar/ArtistSearchBar';
 
 const styles = {
   headerSegment: {
@@ -62,6 +63,7 @@ class PageHeader extends React.Component {
   }
 
   render() {
+    const { user, logout } = this.props;
     const { sticky } = this.state;
 
     return (
@@ -78,32 +80,34 @@ class PageHeader extends React.Component {
         <Container className="top-pad">
           <Menu inverted borderless fluid fixed={sticky ? 'top' : null}>
             <Container>
-              {this.props.user !== null ? (
-                <Menu.Item>
-                  <Image
-                    size="mini"
-                    circular
-                    src={_.get(this.props.user, ['images', 0, 'url'], '')}
-                  />
-                </Menu.Item>
-              ) : null}
-              {this.props.user !== null ? (
+              {user !== null ? (
                 <React.Fragment>
-                  <Menu.Item>{this.props.user.id}</Menu.Item>
+                  <Menu.Item>
+                    <Image size="mini" circular src={_.get(user, ['images', 0, 'url'], '')} />
+                  </Menu.Item>
+                  <Menu.Item>{user.id}</Menu.Item>
                   <Menu.Item as={Link} to="/profile">
                     Profile Statistics
                   </Menu.Item>
+                  <Menu.Item>
+                    <ArtistSearchBar fluid={false} size="small" inverted />
+                  </Menu.Item>
 
                   <Menu.Menu position="right">
-                    <Menu.Item onClick={this.props.logout}>Logout</Menu.Item>
+                    <Menu.Item onClick={logout}>Logout</Menu.Item>
                   </Menu.Menu>
                 </React.Fragment>
               ) : (
-                <Menu.Menu position="right">
-                  <Menu.Item as="a" href={loginEndpoint}>
-                    Login
+                <React.Fragment>
+                  <Menu.Item>
+                    <ArtistSearchBar fluid={false} size="small" inverted />
                   </Menu.Item>
-                </Menu.Menu>
+                  <Menu.Menu position="right">
+                    <Menu.Item as="a" href={loginEndpoint}>
+                      Login
+                    </Menu.Item>
+                  </Menu.Menu>
+                </React.Fragment>
               )}
             </Container>
           </Menu>

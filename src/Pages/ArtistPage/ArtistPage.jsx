@@ -81,7 +81,7 @@ class ArtistPage extends React.Component {
   }
 
   render() {
-    const { match, history } = this.props;
+    const { match } = this.props;
     const artistID = _.get(this.state.artist, 'id', '');
 
     return (
@@ -99,11 +99,7 @@ class ArtistPage extends React.Component {
               index={i}
             />
           ))}
-          <ArtistSearchBar
-            disabled={this.state.loading}
-            history={history}
-            onError={this.handleErrors}
-          />
+          <ArtistSearchBar disabled={this.state.loading} onError={this.handleErrors} />
           <MainArtist
             loading={this.state.loading}
             artist={this.state.artist}
@@ -119,9 +115,6 @@ class ArtistPage extends React.Component {
 }
 
 ArtistPage.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       artistname: PropTypes.string,

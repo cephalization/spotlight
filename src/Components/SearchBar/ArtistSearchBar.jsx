@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
+
 import SearchBar from './SearchBar';
 import { artistSearchEndpoint } from '../../endpoints';
 import { saveGeneralAuth, loadGeneralAuth } from '../../utils';
@@ -47,7 +49,7 @@ class ArtistSearchBar extends React.Component {
   }
 
   render() {
-    const { disabled } = this.props;
+    const { disabled, ...rest } = this.props;
     const { loading } = this.state;
 
     return (
@@ -65,6 +67,7 @@ class ArtistSearchBar extends React.Component {
             }
           }
         }
+        {...rest}
       />
     );
   }
@@ -83,4 +86,4 @@ ArtistSearchBar.defaultProps = {
   onError: () => {},
 };
 
-export default ArtistSearchBar;
+export default withRouter(ArtistSearchBar);

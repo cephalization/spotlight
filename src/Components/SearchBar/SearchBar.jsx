@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Input } from 'semantic-ui-react';
 
 const SearchBar = ({
-  size, placeholder, onEnter, disabled, loading,
+  size, placeholder, onEnter, disabled, loading, ...rest
 }) => (
   <Input
     fluid
@@ -20,6 +20,7 @@ const SearchBar = ({
       }
     }}
     tabIndex="0"
+    {...rest}
   />
 );
 
