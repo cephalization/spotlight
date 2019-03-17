@@ -11,7 +11,7 @@ const ArtistCard = ({
 }) => {
   const image = loading ? notFound : _.get(artist, ['images', 0, 'url'], notFound);
   const artistName = loading
-    ? `Searching for ${search}...`
+    ? 'Searching for artist...'
     : _.get(artist, 'name', 'Artist Not Found!');
   const genres = loading ? [] : _.get(artist, 'genres', []);
   const link = loading ? (

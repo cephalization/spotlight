@@ -9,8 +9,10 @@ const styles = {
   paddingLeft: '1em',
 };
 
-const TracksList = ({ tracks, showAlbumInfo, emptyMessage }) => (
-  <Feed style={styles}>
+const TracksList = ({
+  tracks, showAlbumInfo, emptyMessage, style,
+}) => (
+  <Feed style={{ ...styles, ...style }}>
     {tracks.map((track, i) => (
       <Feed.Event className="track-item" key={track.name}>
         {showAlbumInfo ? (
@@ -48,6 +50,7 @@ const TracksList = ({ tracks, showAlbumInfo, emptyMessage }) => (
 TracksList.defaultProps = {
   showAlbumInfo: true,
   emptyMessage: 'No tracks available',
+  style: {},
 };
 
 export default TracksList;

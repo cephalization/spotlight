@@ -30,7 +30,11 @@ const TopTrackPane = ({ user, accessToken }) => {
     }
   }, [JSON.stringify(user)]);
 
-  return <Tab.Pane loading={loading}>{!loading && <TracksList tracks={tracks} />}</Tab.Pane>;
+  return (
+    <Tab.Pane loading={loading}>
+      {!loading && <TracksList style={{ maxHeight: 'unset' }} tracks={tracks} />}
+    </Tab.Pane>
+  );
 };
 
 export default withAuth(TopTrackPane);
