@@ -1,5 +1,5 @@
 {
-  "spotify_client_id": "",
-  "spotify_client_secret": "",
-  "spotify_redirect_uri": ""
+  "spotify_client_id": "c48882a37d6e43bf92961aecf3e69831",
+  "spotify_client_secret": "580ee2f0f45d4b6f8f67c902a6e840c4",
+  "spotify_redirect_uri": "http://localhost:8081/api/spotify/callback"
 }
