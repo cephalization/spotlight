@@ -49,7 +49,9 @@ class ArtistSearchBar extends React.Component {
   }
 
   render() {
-    const { disabled, ...rest } = this.props;
+    const {
+      disabled, history, staticContext, ...rest
+    } = this.props;
     const { loading } = this.state;
 
     return (
