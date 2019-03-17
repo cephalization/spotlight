@@ -6,12 +6,11 @@ import PageHeader from '../../Components/PageHeader/PageHeader';
 import PageFooter from '../../Components/PageFooter/PageFooter';
 import ContentSegment from '../../Components/ContentSegment/ContentSegment';
 import TopArtistPane from './TopArtistPane';
-
-const TopTracksTab = <Tab.Pane>Coming soon...</Tab.Pane>;
+import TopTrackPane from './TopTrackPane';
 
 const panes = [
   { menuItem: 'Top Artists (recently)', render: () => <TopArtistPane /> },
-  { menuItem: 'Top Tracks (recently)', render: () => TopTracksTab },
+  { menuItem: 'Top Tracks (recently)', render: () => <TopTrackPane /> },
 ];
 
 const StatsPage = ({ user, login }) => {
