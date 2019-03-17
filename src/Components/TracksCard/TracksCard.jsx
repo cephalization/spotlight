@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Card, Dimmer, Loader } from 'semantic-ui-react';
 import TracksList from './TracksList';
-import { topTracksEndpoint } from '../../endpoints';
+import { topArtistTracksEndpoint } from '../../endpoints';
 import { saveGeneralAuth, loadGeneralAuth } from '../../utils';
 
 const getInitState = () => ({
@@ -33,7 +33,7 @@ class TracksCard extends React.Component {
 
   handleTopTracksRequest(artistID) {
     axios
-      .post(topTracksEndpoint, {
+      .post(topArtistTracksEndpoint, {
         data: {
           artistID,
           generalAuth: loadGeneralAuth(),
