@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "spotlight",
+  "alias": "spotlight",
   "builds": [
     {
       "src": "package.json",
