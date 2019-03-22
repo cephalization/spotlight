@@ -1,6 +1,5 @@
 {
   "name": "spotlight",
-  "homepage": "http://anthonypowell.me/spotlight/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -20,7 +19,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.1",
+    "react-scripts": "^2.1.8",
     "request": "^2.83.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.86.0"
@@ -30,17 +29,19 @@
     "start-forked": "react-scripts start & node ./api/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "now-build": "react-scripts build"
   },
   "devDependencies": {
-    "eslint": "^4.9.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.4.0",
     "prettier": "^1.16.4",
     "prettier-eslint": "^8.8.2",
     "prettier-eslint-cli": "^4.7.1"
   },
-  "proxy": "http://localhost:8081/"
+  "proxy": "http://localhost:8081/",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

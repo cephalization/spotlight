@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "name": "spotlight",
+  "alias": "spotlight",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": { "distDir": "build" }
+    },
+    {
+      "src": "api/server.js",
+      "use": "@now/node"
+    }
+  ],
+  "env": {
+    "spotify_client_id": "@spotify_client_id",
+    "spotify_client_secret": "@spotify_client_secret",
+    "spotify_redirect_uri": "@redirect_uri"
+  },
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "headers": { "cache-control": "s-maxage=31536000,immutable" },
+      "dest": "/static/$1"
+    },
+    { "src": "/favicon.ico", "dest": "/favicon.ico" },
+    { "src": "/asset-manifest.json", "dest": "/asset-manifest.json" },
+    { "src": "/manifest.json", "dest": "/manifest.json" },
+    { "src": "/precache-manifest.(.*)", "dest": "/precache-manifest.$1" },
+    {
+      "src": "/api/(.*)",
+      "dest": "api/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "/index.html"
+    }
+  ]
+}
