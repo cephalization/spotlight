@@ -3,10 +3,10 @@ const moment = require('moment');
 const request = require('request');
 const querystring = require('querystring');
 
-const REACT_APP_BASE_URL =
-  process.env.REACT_APP_BASE_URL != null && process.env.REACT_APP_BASE_URL.length
-    ? process.env.REACT_APP_BASE_URL
-    : '/';
+const NOW_URL =
+  process.env.NOW_URL != null && process.env.NOW_URL.length
+    ? process.env.NOW_URL
+    : 'http://localhost:3000';
 
 // Generate authorization request information for a GENERAL token
 const {
@@ -163,7 +163,7 @@ function spotifyLoginCallback() {
     const storedState = req.cookies ? req.cookies[spotifyStateKey] : null;
 
     if (state === null || state !== storedState) {
-      res.redirect(`${REACT_APP_BASE_URL}/error_state_mismatch`);
+      res.redirect(`${NOW_URL}/error_state_mismatch`);
     } else {
       res.clearCookie(spotifyStateKey);
 
@@ -186,12 +186,12 @@ function spotifyLoginCallback() {
           const access_token = body.access_token;
           const refresh_token = body.refresh_token;
 
-          res.redirect(`${REACT_APP_BASE_URL}/success?${querystring.stringify({
+          res.redirect(`${NOW_URL}/success?${querystring.stringify({
             access_token,
             refresh_token,
           })}`);
         } else {
-          res.redirect(`${REACT_APP_BASE_URL}/error`);
+          res.redirect(`${NOW_URL}/error`);
         }
       });
     }

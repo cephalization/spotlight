@@ -1,10 +1,5 @@
-const baseURL =
-  process.env.API_BASE_URL != null && process.env.API_BASE_URL.length
-    ? process.env.API_BASE_URL
-    : '';
-
 export const loginEndpoint = '/api/spotify/login/';
-export const userEndpoint = `$/api/spotify/user/`;
+export const userEndpoint = `/api/spotify/user/`;
 export const artistSearchEndpoint = `/api/spotify/artist-search/`;
 export const artistEndpoint = `/api/spotify/artist/`;
 export const relatedArtistsEndpoint = `/api/spotify/relatedartists/`;
