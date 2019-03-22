@@ -36,13 +36,11 @@ spotifyEndpoint.RegisterRoutes(router);
  */
 api.use(baseURL, router);
 
-console.log(process.env)
-
-if (process.env) {
+if (process.env.NODE_ENV === "production") {
   /**
    * Start the server with NOW
    */
-  module.exports = app;
+  module.exports = api;
 } else {
 /**
  * Start the server locally
