@@ -9,14 +9,14 @@
     },
     {
       "src": "api/server.js",
-      "use": "@now/node",
-      "env": {
-        "spotify_client_id": "@spotify_client_id",
-        "spotify_client_secret": "@spotify_client_secret",
-        "spotify_redirect_uri": "@redirect_uri"
-      }
+      "use": "@now/node"
     }
   ],
+  "env": {
+    "spotify_client_id": "@spotify_client_id",
+    "spotify_client_secret": "@spotify_client_secret",
+    "spotify_redirect_uri": "@redirect_uri"
+  },
   "routes": [
     {
       "src": "/static/(.*)",
