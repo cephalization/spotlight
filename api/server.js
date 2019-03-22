@@ -36,8 +36,17 @@ spotifyEndpoint.RegisterRoutes(router);
  */
 api.use(baseURL, router);
 
+console.log(process.env)
+
+if (process.env) {
+  /**
+   * Start the server with NOW
+   */
+  module.exports = app;
+} else {
 /**
- * Start the server
+ * Start the server locally
  */
 api.listen(port);
 console.log('Spotlight API is listening on port:' + port);
+}
