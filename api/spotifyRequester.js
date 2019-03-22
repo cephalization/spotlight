@@ -1,5 +1,4 @@
 require('request');
-const fs = require('fs');
 const moment = require('moment');
 const request = require('request');
 const querystring = require('querystring');
@@ -7,14 +6,14 @@ const querystring = require('querystring');
 const REACT_APP_BASE_URL =
   process.env.REACT_APP_BASE_URL != null && process.env.REACT_APP_BASE_URL.length
     ? process.env.REACT_APP_BASE_URL
-    : 'http://localhost:3000';
+    : '/';
 
 // Generate authorization request information for a GENERAL token
 const {
   spotify_client_id,
   spotify_client_secret,
   spotify_redirect_uri,
-} = require('./apiAuthentication');
+} = process.env;
 
 const authHeader =
   `Basic ${new Buffer(`${spotify_client_id}:${spotify_client_secret}`).toString('base64')}`;
