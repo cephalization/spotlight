@@ -1,6 +1,5 @@
 {
   "name": "spotlight",
-  "homepage": "http://anthonypowell.me/spotlight/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
