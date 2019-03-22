@@ -6,7 +6,7 @@ const querystring = require('querystring');
 const BASE_URI =
   process.env.DEBUG_URI != null && process.env.DEBUG_URI.length
     ? process.env.DEBUG_URI
-    : '/';
+    : '';
 
 // Generate authorization request information for a GENERAL token
 const {
