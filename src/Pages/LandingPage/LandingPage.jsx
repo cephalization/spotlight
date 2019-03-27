@@ -38,7 +38,7 @@ const LandingPage = () => (
         </Header>
         <p className="lead">
           Enjoy too much good music? Can&apos;t keep track of the releases you still need to listen
-          to? Enter Spotlight. Add new releases to you Listen List, or have Spotlight do it for you.
+          to? Enter Spotlight. Add new releases to your Listen List, or have Spotlight do it for you.
           You&apos;ll never get stuck listening to the same music on loop again.
         </p>
       </ContentSegment>
