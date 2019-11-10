@@ -80,4 +80,3 @@ yarn-debug.log*
 yarn-error.log*
 .vscode/
 api/apiAuthentication.json
-config/default.json
