@@ -1,9 +1,9 @@
 const moment = require("moment");
 const request = require("request");
 const querystring = require("querystring");
-const config = require("config");
-
 const some = require("lodash/some");
+
+const config = require("../config");
 
 const BASE_URI = config.get("BASE_URI");
 
@@ -15,7 +15,7 @@ const spotify_redirect_uri = config.get("SPOTIFY_REDIRECT_URI");
 if (
   some(
     [spotify_redirect_uri, spotify_client_id, spotify_client_secret],
-    s => s === "" || s === null
+    s => s === "" || s == null
   )
 ) {
   console.error("Configure environment variables in /config. Exiting.");
