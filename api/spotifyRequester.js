@@ -1,19 +1,26 @@
-require("request");
 const moment = require("moment");
 const request = require("request");
 const querystring = require("querystring");
+const config = require("config");
 
-const BASE_URI =
-  process.env.DEBUG_URI != null && process.env.DEBUG_URI.length
-    ? process.env.DEBUG_URI
-    : "";
+const some = require("lodash/some");
+
+const BASE_URI = config.get("BASE_URI");
 
 // Generate authorization request information for a GENERAL token
-const {
-  spotify_client_id,
-  spotify_client_secret,
-  spotify_redirect_uri
-} = process.env;
+const spotify_client_id = config.get("SPOTIFY_CLIENT_ID");
+const spotify_client_secret = config.get("SPOTIFY_CLIENT_SECRET");
+const spotify_redirect_uri = config.get("SPOTIFY_REDIRECT_URI");
+
+if (
+  some(
+    [spotify_redirect_uri, spotify_client_id, spotify_client_secret],
+    s => s === "" || s === null
+  )
+) {
+  console.error("Configure environment variables in /config. Exiting.");
+  process.exit(1);
+}
 
 const authHeader = `Basic ${new Buffer(
   `${spotify_client_id}:${spotify_client_secret}`

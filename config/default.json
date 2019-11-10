@@ -1,0 +1,9 @@
+{
+  "REACT_APP_BASE_URL": "",
+  "SPOTIFY_CLIENT_ID": "",
+  "SPOTIFY_CLIENT_SECRET": "",
+  "SPOTIFY_REDIRECT_URI": "",
+  "API_PORT": 8081,
+  "API_BASE_URL": "/api",
+  "BASE_URI": ""
+}
