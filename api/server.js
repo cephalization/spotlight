@@ -1,6 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+
+const config = require("../config");
+
 const spotifyEndpoint = require("./spotifyEndpoint");
 
 const api = express();
@@ -8,10 +11,9 @@ const api = express();
 /**
  * Setup server config constants
  */
-const port = process.env.API_PORT == null ? 8081 : process.env.API_PORT;
+const port = config.get("API_PORT");
 
-const baseURL =
-  process.env.API_BASE_URL == null ? "/api" : process.env.API_BASE_URL;
+const baseURL = config.get("API_BASE_URL");
 
 /**
  * Apply Express Middlewares
