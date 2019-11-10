@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Route, Redirect } from 'react-router-dom';
-import { withAuth } from '../../Contexts/Authentication';
+import React from "react";
+import PropTypes from "prop-types";
+import { Route, Redirect } from "react-router-dom";
+import { withAuth } from "../../Contexts/Authentication";
 
 /**
  * Create a route that redirects if the user is not logged in
@@ -12,7 +12,7 @@ import { withAuth } from '../../Contexts/Authentication';
 const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => (
   <Route
     {...rest}
-    render={(props) => {
+    render={props => {
       if (isLoggedIn) {
         return <Component {...props} />;
       }
@@ -20,10 +20,10 @@ const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => (
       return (
         <Redirect
           to={{
-            pathname: '/',
+            pathname: "/",
             state: {
-              error: 'Must be logged in to access that page!',
-            },
+              error: "Must be logged in to access that page!"
+            }
           }}
         />
       );
@@ -33,7 +33,7 @@ const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => (
 
 PrivateRoute.propTypes = {
   component: PropTypes.node.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
 export default withAuth(PrivateRoute);

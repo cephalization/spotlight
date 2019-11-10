@@ -1,21 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Input } from 'semantic-ui-react';
+import React from "react";
+import PropTypes from "prop-types";
+import { Input } from "semantic-ui-react";
 
 const SearchBar = ({
-  size, placeholder, onEnter, disabled, loading, ...rest
+  size,
+  placeholder,
+  onEnter,
+  disabled,
+  loading,
+  ...rest
 }) => (
   <Input
     fluid
     size={size}
     icon={{
-      name: loading ? 'spinner' : 'search',
+      name: loading ? "spinner" : "search",
       loading,
-      disabled,
+      disabled
     }}
     placeholder={placeholder}
-    onKeyPress={(e) => {
-      if (e.key === 'Enter') {
+    onKeyPress={e => {
+      if (e.key === "Enter") {
         onEnter(e);
       }
     }}
@@ -29,17 +34,17 @@ SearchBar.propTypes = {
   placeholder: PropTypes.string,
   onEnter: PropTypes.func,
   loading: PropTypes.bool,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 SearchBar.defaultProps = {
-  size: 'small',
-  placeholder: '',
-  onEnter: (e) => {
+  size: "small",
+  placeholder: "",
+  onEnter: e => {
     e.preventDefault();
   },
   loading: false,
-  disabled: false,
+  disabled: false
 };
 
 export default SearchBar;

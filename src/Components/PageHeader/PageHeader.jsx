@@ -1,28 +1,29 @@
-import React from 'react';
-import { Header, Container, Segment, Menu, Image } from 'semantic-ui-react';
-import _ from 'lodash';
-import { Link } from 'react-router-dom';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { loginEndpoint } from '../../endpoints';
-import { withAuth } from '../../Contexts/Authentication';
-import ArtistSearchBar from '../SearchBar/ArtistSearchBar';
+import React from "react";
+import { Header, Container, Segment, Menu, Image } from "semantic-ui-react";
+import _ from "lodash";
+import { Link } from "react-router-dom";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import { loginEndpoint } from "../../endpoints";
+import { withAuth } from "../../Contexts/Authentication";
+import ArtistSearchBar from "../SearchBar/ArtistSearchBar";
 
 const styles = {
   headerSegment: {
-    paddingTop: '3em',
-    paddingBottom: '1.5em',
-    minHeight: '150px',
-    backgroundColor: '#222',
+    paddingTop: "3em",
+    paddingBottom: "1.5em",
+    minHeight: "150px",
+    backgroundColor: "#222"
   },
   headerBrand: {
-    fontSize: '3.5em',
-  },
+    fontSize: "3.5em"
+  }
 };
 
 const getElementWindowTop = elem =>
-  (elem && typeof elem.getBoundingClientRect === 'function'
-    ? elem.getBoundingClientRect().top - document.body.getBoundingClientRect().top
-    : 0);
+  elem && typeof elem.getBoundingClientRect === "function"
+    ? elem.getBoundingClientRect().top -
+      document.body.getBoundingClientRect().top
+    : 0;
 
 /**
  * Main Page Header and Brand
@@ -32,7 +33,7 @@ class PageHeader extends React.Component {
     super(props);
 
     this.state = {
-      sticky: false,
+      sticky: false
     };
 
     this.hero = React.createRef();
@@ -40,11 +41,11 @@ class PageHeader extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.shouldBecomeSticky);
+    window.addEventListener("scroll", this.shouldBecomeSticky);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.shouldBecomeSticky);
+    window.removeEventListener("scroll", this.shouldBecomeSticky);
   }
 
   /**
@@ -55,7 +56,10 @@ class PageHeader extends React.Component {
     const elementTop = getElementWindowTop(hero);
     const elementBottom = elementTop + hero.clientHeight;
 
-    if (elementBottom < window.scrollY || elementTop >= window.scrollY + window.innerHeight) {
+    if (
+      elementBottom < window.scrollY ||
+      elementTop >= window.scrollY + window.innerHeight
+    ) {
       this.setState({ sticky: true });
     } else if (this.state.sticky) {
       this.setState({ sticky: false });
@@ -78,12 +82,16 @@ class PageHeader extends React.Component {
           </Container>
         </div>
         <Container className="top-pad">
-          <Menu inverted borderless fluid fixed={sticky ? 'top' : null}>
+          <Menu inverted borderless fluid fixed={sticky ? "top" : null}>
             <Container>
               {user !== null ? (
                 <React.Fragment>
                   <Menu.Item>
-                    <Image size="mini" circular src={_.get(user, ['images', 0, 'url'], '')} />
+                    <Image
+                      size="mini"
+                      circular
+                      src={_.get(user, ["images", 0, "url"], "")}
+                    />
                   </Menu.Item>
                   <Menu.Item>{user.id}</Menu.Item>
                   <Menu.Item as={Link} to="/profile">

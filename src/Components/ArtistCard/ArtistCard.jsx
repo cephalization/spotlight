@@ -1,48 +1,51 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { Card, Icon, Image, Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import notFound from '../../Images/imagenotfound.png';
+import React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import { Card, Icon, Image, Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import notFound from "../../Images/imagenotfound.png";
 
-const ArtistCard = ({
-  loading, artist, search, compact, width, ...props
-}) => {
-  const image = loading ? notFound : _.get(artist, ['images', 0, 'url'], notFound);
+const ArtistCard = ({ loading, artist, search, compact, width, ...props }) => {
+  const image = loading
+    ? notFound
+    : _.get(artist, ["images", 0, "url"], notFound);
   const artistName = loading
-    ? 'Searching for artist...'
-    : _.get(artist, 'name', 'Artist Not Found!');
-  const genres = loading ? [] : _.get(artist, 'genres', []);
+    ? "Searching for artist..."
+    : _.get(artist, "name", "Artist Not Found!");
+  const genres = loading ? [] : _.get(artist, "genres", []);
   const link = loading ? (
-    'Loading artist information...'
+    "Loading artist information..."
   ) : (
     <Button
-      style={{ backgroundColor: '#1DB954', color: '#FFF' }}
-      href={_.get(artist, ['external_urls', 'spotify'], '/#')}
-      disabled={_.get(artist, ['external_urls', 'spotify'], null) === null}
+      style={{ backgroundColor: "#1DB954", color: "#FFF" }}
+      href={_.get(artist, ["external_urls", "spotify"], "/#")}
+      disabled={_.get(artist, ["external_urls", "spotify"], null) === null}
       target="_blank"
     >
-      <FontAwesomeIcon icon={['fab', 'spotify']} /> Artist&apos;s Spotify Profile
+      <FontAwesomeIcon icon={["fab", "spotify"]} /> Artist&apos;s Spotify
+      Profile
     </Button>
   );
-  const followers = loading ? 'Loading' : _.get(artist, ['followers', 'total'], 'N/A');
+  const followers = loading
+    ? "Loading"
+    : _.get(artist, ["followers", "total"], "N/A");
   const compactProps = {
-    floated: 'right',
-    size: 'tiny',
+    floated: "right",
+    size: "tiny",
     style: {
-      height: '100px',
-      width: '100px',
-      objectFit: 'cover',
-      borderRadius: '80%',
-    },
+      height: "100px",
+      width: "100px",
+      objectFit: "cover",
+      borderRadius: "80%"
+    }
   };
   const fullSizeProps = {
     style: {
-      height: '300px',
-      width: '300px',
-      objectFit: 'cover',
-    },
+      height: "300px",
+      width: "300px",
+      objectFit: "cover"
+    }
   };
   const fluid = !compact && width != null && width < 667;
 
@@ -62,7 +65,9 @@ const ArtistCard = ({
         </Card.Header>
         <Card.Meta>
           <span className="date">
-            {compact ? genres.join(', ') : genres.filter((v, i) => i < 3).join(', ')}
+            {compact
+              ? genres.join(", ")
+              : genres.filter((v, i) => i < 3).join(", ")}
           </span>
         </Card.Meta>
         <Card.Description>{link}</Card.Description>
@@ -82,19 +87,19 @@ ArtistCard.propTypes = {
     external_urls: PropTypes.shape({ spotify: PropTypes.string }),
     name: PropTypes.string,
     followers: PropTypes.shape({ total: PropTypes.number }),
-    genres: PropTypes.array,
+    genres: PropTypes.array
   }),
   search: PropTypes.string,
   compact: PropTypes.bool,
-  width: PropTypes.number,
+  width: PropTypes.number
 };
 
 ArtistCard.defaultProps = {
   loading: false,
   artist: {},
-  search: 'Artist',
+  search: "Artist",
   compact: false,
-  width: null,
+  width: null
 };
 
 export default ArtistCard;

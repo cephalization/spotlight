@@ -1,4 +1,4 @@
-export const loginEndpoint = '/api/spotify/login/';
+export const loginEndpoint = "/api/spotify/login/";
 export const userEndpoint = `/api/spotify/user/`;
 export const artistSearchEndpoint = `/api/spotify/artist-search/`;
 export const artistEndpoint = `/api/spotify/artist/`;

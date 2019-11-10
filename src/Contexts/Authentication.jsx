@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import qs from 'query-string';
-import axios from 'axios';
-import { loginEndpoint, userEndpoint } from '../endpoints';
+import React from "react";
+import PropTypes from "prop-types";
+import qs from "query-string";
+import axios from "axios";
+import { loginEndpoint, userEndpoint } from "../endpoints";
 
 export const AuthenticationContext = React.createContext();
 
@@ -10,10 +10,11 @@ const getInitialAuthState = () => ({
   isLoggedIn: false,
   user: null,
   accessToken: null,
-  refreshToken: null,
+  refreshToken: null
 });
 
-const clearAuthenticationCookies = () => console.log('Will clear cookies upon implementation');
+const clearAuthenticationCookies = () =>
+  console.log("Will clear cookies upon implementation");
 
 /**
  * Login a user
@@ -50,15 +51,15 @@ class AuthenticationProvider extends React.Component {
       axios
         .get(userEndpoint, {
           headers: {
-            Authorization: `Bearer ${tokens.access_token}`,
-          },
+            Authorization: `Bearer ${tokens.access_token}`
+          }
         })
-        .then((response) => {
+        .then(response => {
           this.setState({
             accessToken: tokens.access_token,
             refreshToken: tokens.refresh_token,
             user: response.data.data.user,
-            isLoggedIn: true,
+            isLoggedIn: true
           });
         })
         .catch(() => this.setState(getInitialAuthState()));
@@ -79,7 +80,7 @@ class AuthenticationProvider extends React.Component {
       ...this.state,
       login: startLogin,
       logout: this.logout,
-      onAuthRedirect: this.onAuthRedirect,
+      onAuthRedirect: this.onAuthRedirect
     };
 
     return (
@@ -91,7 +92,7 @@ class AuthenticationProvider extends React.Component {
 }
 
 AuthenticationProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 /**

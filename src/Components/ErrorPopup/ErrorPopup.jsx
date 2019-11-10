@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Message, Transition } from 'semantic-ui-react';
+import React from "react";
+import PropTypes from "prop-types";
+import { Message, Transition } from "semantic-ui-react";
 
 class ErrorPopup extends React.Component {
   constructor() {
@@ -9,7 +9,7 @@ class ErrorPopup extends React.Component {
     this.hidePopupAfterInactivity = this.hidePopupAfterInactivity.bind(this);
 
     this.state = {
-      visible: false,
+      visible: false
     };
   }
 
@@ -40,10 +40,10 @@ class ErrorPopup extends React.Component {
     const { header, error, index } = this.props;
 
     const styles = {
-      position: 'absolute',
-      top: '',
-      width: 'inherit',
-      zIndex: '1',
+      position: "absolute",
+      top: "",
+      width: "inherit",
+      zIndex: "1"
     };
 
     // Line ErrorPopups below each other if there is more than one
@@ -68,7 +68,7 @@ class ErrorPopup extends React.Component {
 ErrorPopup.propTypes = {
   header: PropTypes.string.isRequired,
   error: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired
 };
 
 export default ErrorPopup;

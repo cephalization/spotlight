@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
-import { withAuth } from '../../Contexts/Authentication';
+import React from "react";
+import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
+import { withAuth } from "../../Contexts/Authentication";
 
 /**
  * Component that triggers user auth, and redirects to previous page
@@ -17,7 +17,7 @@ class LoginHandler extends React.Component {
     return isLoggedIn ? (
       <Redirect
         to={{
-          pathname: '/',
+          pathname: "/"
         }}
       />
     ) : null;
@@ -26,7 +26,7 @@ class LoginHandler extends React.Component {
 
 LoginHandler.propTypes = {
   onAuthRedirect: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
 export default withAuth(LoginHandler);

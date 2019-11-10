@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Segment, Container } from 'semantic-ui-react';
+import React from "react";
+import PropTypes from "prop-types";
+import { Segment, Container } from "semantic-ui-react";
 
 // Stylesheet object
 const styles = {
   segment: {
-    minHeight: '150px',
+    minHeight: "150px"
   },
   container: {
-    paddingTop: '3em',
-    paddingBottom: '2em',
-  },
+    paddingTop: "3em",
+    paddingBottom: "2em"
+  }
 };
 
 /**
@@ -26,7 +26,7 @@ const ContentSegment = ({ children }) => (
 
 ContentSegment.propTypes = {
   // Child nodes to be rendered into the segment
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default ContentSegment;

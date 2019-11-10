@@ -3,8 +3,8 @@ const {
   spotifyGeneralRequest,
   spotifyLoginRequest,
   spotifyAuthRequest,
-  spotifyLoginCallback,
-} = require('./spotifyRequester');
+  spotifyLoginCallback
+} = require("./spotifyRequester");
 
 /**
  * Endpoint configuration for Spotify API
@@ -29,102 +29,114 @@ const {
  * https://beta.developer.spotify.com/documentation/web-api/reference/
  */
 
-const ENDPOINT_URI = '/spotify';
+const ENDPOINT_URI = "/spotify";
 
-module.exports.RegisterRoutes = (router) => {
+module.exports.RegisterRoutes = router => {
   router.get(`${ENDPOINT_URI}/login`, spotifyLoginRequest());
 
   router.get(`${ENDPOINT_URI}/callback`, spotifyLoginCallback());
 
   router.get(`${ENDPOINT_URI}/user`, async (req, res) => {
-    const auth = req.get('authorization');
+    const auth = req.get("authorization");
     if (auth != null) {
       const message = `${ENDPOINT_URI}: API GET Request Received with auth.`;
 
       spotifyAuthRequest(
-        'https://api.spotify.com/v1/me',
+        "https://api.spotify.com/v1/me",
         auth,
         null,
-        'get',
+        "get",
         (e, response, body) => {
           if (!e && response.statusCode === 200) {
             res.json({
               success: true,
               data: {
-                user: body,
-              },
+                user: body
+              }
             });
           } else {
             const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
-            res.status(response.statusCode).json({ success: false, message, error: e });
+            res
+              .status(response.statusCode)
+              .json({ success: false, message, error: e });
           }
-        },
+        }
       );
     } else {
       const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
-      res.status(message.statusCode).json({ success: false, message, error: e });
+      res
+        .status(message.statusCode)
+        .json({ success: false, message, error: e });
     }
   });
 
   router.get(`${ENDPOINT_URI}/user/top/tracks`, async (req, res) => {
-    const auth = req.get('authorization');
+    const auth = req.get("authorization");
     if (auth != null) {
       const message = `${ENDPOINT_URI}: API GET Request Received with auth.`;
 
       spotifyAuthRequest(
-        'https://api.spotify.com/v1/me/top/tracks',
+        "https://api.spotify.com/v1/me/top/tracks",
         auth,
         null,
-        'get',
+        "get",
         (e, response, body) => {
           if (!e && response.statusCode === 200) {
             res.json({
               success: true,
               data: {
                 ...body,
-                generalAuth: auth,
-              },
+                generalAuth: auth
+              }
             });
           } else {
             const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
-            res.status(response.statusCode).json({ success: false, message, error: e });
+            res
+              .status(response.statusCode)
+              .json({ success: false, message, error: e });
           }
-        },
+        }
       );
     } else {
       const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
-      res.status(message.statusCode).json({ success: false, message, error: e });
+      res
+        .status(message.statusCode)
+        .json({ success: false, message, error: e });
     }
   });
 
   router.get(`${ENDPOINT_URI}/user/top/artists`, async (req, res) => {
-    const auth = req.get('authorization');
+    const auth = req.get("authorization");
     if (auth != null) {
       const message = `${ENDPOINT_URI}: API GET Request Received with auth.`;
 
       spotifyAuthRequest(
-        'https://api.spotify.com/v1/me/top/artists',
+        "https://api.spotify.com/v1/me/top/artists",
         auth,
         null,
-        'get',
+        "get",
         (e, response, body) => {
           if (!e && response.statusCode === 200) {
             res.json({
               success: true,
               data: {
                 ...body,
-                generalAuth: auth,
-              },
+                generalAuth: auth
+              }
             });
           } else {
             const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
-            res.status(response.statusCode).json({ success: false, message, error: e });
+            res
+              .status(response.statusCode)
+              .json({ success: false, message, error: e });
           }
-        },
+        }
       );
     } else {
       const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
-      res.status(message.statusCode).json({ success: false, message, error: e });
+      res
+        .status(message.statusCode)
+        .json({ success: false, message, error: e });
     }
   });
 
@@ -160,9 +172,9 @@ module.exports.RegisterRoutes = (router) => {
 
         // We have authorization from Spotify, query for the artist
         spotifyGeneralRequest(
-          'https://api.spotify.com/v1/search',
+          "https://api.spotify.com/v1/search",
           `q=${encodeURIComponent(req.body.data.artistQuery)}&type=artist`,
-          'get',
+          "get",
           authorization,
           (e, searchResponse, body) => {
             if (!e && searchResponse.statusCode === 200) {
@@ -171,19 +183,25 @@ module.exports.RegisterRoutes = (router) => {
                 success: true,
                 data: {
                   generalAuth: authorization,
-                  artist: body.artists.items[0],
-                },
+                  artist: body.artists.items[0]
+                }
               });
             } else {
               res
                 .status(response.statusCode)
-                .json({ success: false, message: body.error.message, error: body.error });
+                .json({
+                  success: false,
+                  message: body.error.message,
+                  error: body.error
+                });
             }
-          },
+          }
         );
       } else {
         const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
-        res.status(message.statusCode).json({ success: false, message, error: e });
+        res
+          .status(message.statusCode)
+          .json({ success: false, message, error: e });
       }
     });
   });
@@ -222,7 +240,7 @@ module.exports.RegisterRoutes = (router) => {
         spotifyGeneralRequest(
           `https://api.spotify.com/v1/artists/${req.body.data.artistID}`,
           null,
-          'get',
+          "get",
           authorization,
           (e, searchResponse, body) => {
             if (!e && searchResponse.statusCode === 200) {
@@ -231,15 +249,19 @@ module.exports.RegisterRoutes = (router) => {
                 success: true,
                 data: {
                   generalAuth: authorization,
-                  artist: body,
-                },
+                  artist: body
+                }
               });
             } else {
               res
                 .status(response.statusCode)
-                .json({ success: false, message: body.error.message, error: body.error });
+                .json({
+                  success: false,
+                  message: body.error.message,
+                  error: body.error
+                });
             }
-          },
+          }
         );
       } else {
         const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
@@ -280,9 +302,11 @@ module.exports.RegisterRoutes = (router) => {
 
         // We have authorization from Spotify, query for the artist
         spotifyGeneralRequest(
-          `https://api.spotify.com/v1/artists/${req.body.data.artistID}/related-artists`,
+          `https://api.spotify.com/v1/artists/${
+            req.body.data.artistID
+          }/related-artists`,
           null,
-          'get',
+          "get",
           authorization,
           (e, searchResponse, body) => {
             if (!e && searchResponse.statusCode === 200) {
@@ -291,15 +315,19 @@ module.exports.RegisterRoutes = (router) => {
                 success: true,
                 data: {
                   generalAuth: authorization,
-                  artists: body.artists,
-                },
+                  artists: body.artists
+                }
               });
             } else {
               res
                 .status(response.statusCode)
-                .json({ success: false, message: body.error.message, error: body.error });
+                .json({
+                  success: false,
+                  message: body.error.message,
+                  error: body.error
+                });
             }
-          },
+          }
         );
       } else {
         const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
@@ -340,9 +368,11 @@ module.exports.RegisterRoutes = (router) => {
 
         // We have authorization from Spotify, query for the artist
         spotifyGeneralRequest(
-          `https://api.spotify.com/v1/artists/${req.body.data.artistID}/top-tracks?country=US`,
+          `https://api.spotify.com/v1/artists/${
+            req.body.data.artistID
+          }/top-tracks?country=US`,
           null,
-          'get',
+          "get",
           authorization,
           (e, topTracksResponse, body) => {
             if (!e && topTracksResponse.statusCode === 200) {
@@ -351,15 +381,19 @@ module.exports.RegisterRoutes = (router) => {
                 success: true,
                 data: {
                   generalAuth: authorization,
-                  tracks: body.tracks,
-                },
+                  tracks: body.tracks
+                }
               });
             } else {
               res
                 .status(response.statusCode)
-                .json({ success: false, message: body.error.message, error: body.error });
+                .json({
+                  success: false,
+                  message: body.error.message,
+                  error: body.error
+                });
             }
-          },
+          }
         );
       } else {
         const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
@@ -400,9 +434,11 @@ module.exports.RegisterRoutes = (router) => {
 
         // We have authorization from Spotify, query for the artist
         spotifyGeneralRequest(
-          `https://api.spotify.com/v1/artists/${req.body.data.artistID}/albums?market=US`,
+          `https://api.spotify.com/v1/artists/${
+            req.body.data.artistID
+          }/albums?market=US`,
           null,
-          'get',
+          "get",
           authorization,
           (e, albumsResponse, body) => {
             if (!e && albumsResponse.statusCode === 200) {
@@ -411,15 +447,19 @@ module.exports.RegisterRoutes = (router) => {
                 success: true,
                 data: {
                   generalAuth: authorization,
-                  albums: body.items,
-                },
+                  albums: body.items
+                }
               });
             } else {
               res
                 .status(response.statusCode)
-                .json({ success: false, message: body.error.message, error: body.error });
+                .json({
+                  success: false,
+                  message: body.error.message,
+                  error: body.error
+                });
             }
-          },
+          }
         );
       } else {
         const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;
@@ -462,7 +502,7 @@ module.exports.RegisterRoutes = (router) => {
         spotifyGeneralRequest(
           `https://api.spotify.com/v1/albums/${req.body.data.albumID}/tracks`,
           null,
-          'get',
+          "get",
           authorization,
           (e, albumsResponse, body) => {
             if (!e && albumsResponse.statusCode === 200) {
@@ -471,15 +511,19 @@ module.exports.RegisterRoutes = (router) => {
                 success: true,
                 data: {
                   generalAuth: authorization,
-                  tracks: body.items,
-                },
+                  tracks: body.items
+                }
               });
             } else {
               res
                 .status(response.statusCode)
-                .json({ success: false, message: body.error.message, error: body.error });
+                .json({
+                  success: false,
+                  message: body.error.message,
+                  error: body.error
+                });
             }
-          },
+          }
         );
       } else {
         const message = `${ENDPOINT_URI}: API GET Request FAILED. See Response.`;

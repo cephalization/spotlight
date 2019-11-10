@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import { Card, Dimmer, Loader } from 'semantic-ui-react';
-import TracksList from './TracksList';
-import { topArtistTracksEndpoint } from '../../endpoints';
-import { saveGeneralAuth, loadGeneralAuth } from '../../utils';
+import React from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { Card, Dimmer, Loader } from "semantic-ui-react";
+import TracksList from "./TracksList";
+import { topArtistTracksEndpoint } from "../../endpoints";
+import { saveGeneralAuth, loadGeneralAuth } from "../../utils";
 
 const getInitState = () => ({
   tracks: [],
-  loading: true,
+  loading: true
 });
 
 class TracksCard extends React.Component {
@@ -20,11 +20,14 @@ class TracksCard extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.artistID !== '' && this.props.artistID !== prevProps.artistID) {
+    if (
+      this.props.artistID !== "" &&
+      this.props.artistID !== prevProps.artistID
+    ) {
       this.handleTopTracksRequest(this.props.artistID);
     }
 
-    if (this.props.artistID === '' && prevProps.artistID !== '') {
+    if (this.props.artistID === "" && prevProps.artistID !== "") {
       // The artist ID is empty, must be getting a new artist
       // reset the state of this component
       this.setState(getInitState());
@@ -36,22 +39,25 @@ class TracksCard extends React.Component {
       .post(topArtistTracksEndpoint, {
         data: {
           artistID,
-          generalAuth: loadGeneralAuth(),
-        },
+          generalAuth: loadGeneralAuth()
+        }
       })
-      .then((response) => {
+      .then(response => {
         saveGeneralAuth(response.data.data.generalAuth);
         this.setState({
           loading: false,
-          tracks: response.data.data.tracks,
+          tracks: response.data.data.tracks
         });
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({
           ...getInitState(),
-          loading: false,
+          loading: false
         });
-        this.props.onError(error, 'An error occured searching for top tracks...');
+        this.props.onError(
+          error,
+          "An error occured searching for top tracks..."
+        );
       });
   }
 
@@ -78,12 +84,12 @@ class TracksCard extends React.Component {
 TracksCard.propTypes = {
   artistID: PropTypes.string.isRequired,
   width: PropTypes.number,
-  onError: PropTypes.func,
+  onError: PropTypes.func
 };
 
 TracksCard.defaultProps = {
   width: null,
-  onError: () => {},
+  onError: () => {}
 };
 
 export default TracksCard;

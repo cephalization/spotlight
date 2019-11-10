@@ -1,10 +1,10 @@
-import React from 'react';
-import { Header, Button } from 'semantic-ui-react';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import PageHeader from '../../Components/PageHeader/PageHeader';
-import PageFooter from '../../Components/PageFooter/PageFooter';
-import ContentSegment from '../../Components/ContentSegment/ContentSegment';
-import ArtistSearchBar from '../../Components/SearchBar/ArtistSearchBar';
+import React from "react";
+import { Header, Button } from "semantic-ui-react";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import PageHeader from "../../Components/PageHeader/PageHeader";
+import PageFooter from "../../Components/PageFooter/PageFooter";
+import ContentSegment from "../../Components/ContentSegment/ContentSegment";
+import ArtistSearchBar from "../../Components/SearchBar/ArtistSearchBar";
 
 const LandingPage = () => (
   <div>
@@ -15,9 +15,10 @@ const LandingPage = () => (
       <ContentSegment>
         <Header as="h2">What can Spotlight do?</Header>
         <p className="lead">
-          Spotlight links up with <FontAwesomeIcon icon={['fab', 'spotify']} /> Spotify to help you
-          stay in touch with the music in your life. Track your music listening stats, keep track of
-          upcoming music you want to listen to, and sync back up with your Spotify account.
+          Spotlight links up with <FontAwesomeIcon icon={["fab", "spotify"]} />{" "}
+          Spotify to help you stay in touch with the music in your life. Track
+          your music listening stats, keep track of upcoming music you want to
+          listen to, and sync back up with your Spotify account.
         </p>
       </ContentSegment>
       <ContentSegment>
@@ -26,9 +27,10 @@ const LandingPage = () => (
           Spotlight makes keeping up with your favorite artists easy
         </Header>
         <p className="lead">
-          By using this service, you keep the artists you care about in the spotlight. Find out
-          their recent releases, popular tracks, and tour locations. You can even subscribe to
-          notifications to make sure you never miss your new favorite song!
+          By using this service, you keep the artists you care about in the
+          spotlight. Find out their recent releases, popular tracks, and tour
+          locations. You can even subscribe to notifications to make sure you
+          never miss your new favorite song!
         </p>
       </ContentSegment>
       <ContentSegment>
@@ -37,9 +39,10 @@ const LandingPage = () => (
           Never forget about that new release again
         </Header>
         <p className="lead">
-          Enjoy too much good music? Can&apos;t keep track of the releases you still need to listen
-          to? Enter Spotlight. Add new releases to your Listen List, or have Spotlight do it for you.
-          You&apos;ll never get stuck listening to the same music on loop again.
+          Enjoy too much good music? Can&apos;t keep track of the releases you
+          still need to listen to? Enter Spotlight. Add new releases to your
+          Listen List, or have Spotlight do it for you. You&apos;ll never get
+          stuck listening to the same music on loop again.
         </p>
       </ContentSegment>
       <ContentSegment>
@@ -48,8 +51,8 @@ const LandingPage = () => (
           Interested? Create an Account!
         </Header>
         <p className="lead">
-          Signing up will allow you to link your Spotify account and unlock the full potential of
-          Spotlight!
+          Signing up will allow you to link your Spotify account and unlock the
+          full potential of Spotlight!
         </p>
         <Button disabled primary>
           Create account

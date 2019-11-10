@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import _ from 'lodash';
-import ContentSegment from '../../Components/ContentSegment/ContentSegment';
-import PageFooter from '../../Components/PageFooter/PageFooter';
-import PageHeader from '../../Components/PageHeader/PageHeader';
-import RelatedArtists from '../../Components/RelatedArtists/RelatedArtists';
-import { saveGeneralAuth, loadGeneralAuth } from '../../utils';
-import ArtistSearchBar from '../../Components/SearchBar/ArtistSearchBar';
-import ErrorPopup from '../../Components/ErrorPopup/ErrorPopup';
-import { artistEndpoint } from '../../endpoints';
-import MainArtist from '../../Components/MainArtist/MainArtist';
+import React from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import _ from "lodash";
+import ContentSegment from "../../Components/ContentSegment/ContentSegment";
+import PageFooter from "../../Components/PageFooter/PageFooter";
+import PageHeader from "../../Components/PageHeader/PageHeader";
+import RelatedArtists from "../../Components/RelatedArtists/RelatedArtists";
+import { saveGeneralAuth, loadGeneralAuth } from "../../utils";
+import ArtistSearchBar from "../../Components/SearchBar/ArtistSearchBar";
+import ErrorPopup from "../../Components/ErrorPopup/ErrorPopup";
+import { artistEndpoint } from "../../endpoints";
+import MainArtist from "../../Components/MainArtist/MainArtist";
 
 const getInitState = () => ({
   artist: {},
   loading: true,
-  errors: [],
+  errors: []
 });
 
 class ArtistPage extends React.Component {
@@ -33,8 +33,13 @@ class ArtistPage extends React.Component {
 
   componentWillReceiveProps(newProps) {
     // Re-query for an artist when a new match is given via BrowserRouter
-    if (this.props.match.params.artistname !== newProps.match.params.artistname) {
-      this.setState(getInitState(), this.handleArtistRequest(newProps.match.params.artistname));
+    if (
+      this.props.match.params.artistname !== newProps.match.params.artistname
+    ) {
+      this.setState(
+        getInitState(),
+        this.handleArtistRequest(newProps.match.params.artistname)
+      );
     }
   }
 
@@ -44,9 +49,9 @@ class ArtistPage extends React.Component {
    * @param {Object} error axios response error object
    * @param {String} header human-parsable error description
    */
-  handleErrors(error, header = 'An error occurred...') {
+  handleErrors(error, header = "An error occurred...") {
     this.setState({
-      errors: [...this.state.errors, { error, header }],
+      errors: [...this.state.errors, { error, header }]
     });
   }
 
@@ -61,28 +66,28 @@ class ArtistPage extends React.Component {
       .post(artistEndpoint, {
         data: {
           artistID,
-          generalAuth: loadGeneralAuth(),
-        },
+          generalAuth: loadGeneralAuth()
+        }
       })
-      .then((response) => {
+      .then(response => {
         saveGeneralAuth(response.data.data.generalAuth);
         this.setState({
           loading: false,
-          artist: response.data.data.artist,
+          artist: response.data.data.artist
         });
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({
           ...getInitState(),
-          loading: false,
+          loading: false
         });
-        this.handleErrors(error, 'An error occured getting that artist...');
+        this.handleErrors(error, "An error occured getting that artist...");
       });
   }
 
   render() {
     const { match } = this.props;
-    const artistID = _.get(this.state.artist, 'id', '');
+    const artistID = _.get(this.state.artist, "id", "");
 
     return (
       <React.Fragment>
@@ -99,14 +104,20 @@ class ArtistPage extends React.Component {
               index={i}
             />
           ))}
-          <ArtistSearchBar disabled={this.state.loading} onError={this.handleErrors} />
+          <ArtistSearchBar
+            disabled={this.state.loading}
+            onError={this.handleErrors}
+          />
           <MainArtist
             loading={this.state.loading}
             artist={this.state.artist}
             query={match.params.artistname}
             onError={this.handleErrors}
           />
-          <RelatedArtists onError={this.handleErrors} primaryArtistID={artistID} />
+          <RelatedArtists
+            onError={this.handleErrors}
+            primaryArtistID={artistID}
+          />
         </ContentSegment>
         <PageFooter />
       </React.Fragment>
@@ -117,9 +128,9 @@ class ArtistPage extends React.Component {
 ArtistPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      artistname: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
+      artistname: PropTypes.string
+    }).isRequired
+  }).isRequired
 };
 
 export default ArtistPage;
