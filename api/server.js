@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const config = require("config");
+
+const config = require("../config");
 
 const spotifyEndpoint = require("./spotifyEndpoint");
 
