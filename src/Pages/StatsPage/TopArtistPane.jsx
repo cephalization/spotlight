@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { CardGroup, Tab } from 'semantic-ui-react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { CardGroup, Tab } from "semantic-ui-react";
 
-import { topUserArtistsEndpoint } from '../../endpoints';
-import { saveGeneralAuth } from '../../utils';
-import ArtistCard from '../../Components/ArtistCard/ArtistCard';
-import { withAuth } from '../../Contexts/Authentication';
+import { topUserArtistsEndpoint } from "../../endpoints";
+import { saveGeneralAuth } from "../../utils";
+import ArtistCard from "../../Components/ArtistCard/ArtistCard";
+import { withAuth } from "../../Contexts/Authentication";
 
 const TopArtistPane = ({ user, accessToken }) => {
   const [loading, setLoading] = useState(true);
@@ -15,17 +15,17 @@ const TopArtistPane = ({ user, accessToken }) => {
       axios
         .get(topUserArtistsEndpoint, {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+            Authorization: `Bearer ${accessToken}`
+          }
         })
-        .then((response) => {
+        .then(response => {
           saveGeneralAuth(response.data.data.generalAuth);
           setArtists(response.data.data.items);
           setLoading(false);
         })
-        .catch((error) => {
+        .catch(error => {
           setLoading(false);
-          console.error('Failed to retrieve top artists', error);
+          console.error("Failed to retrieve top artists", error);
         });
     }
   }, [JSON.stringify(user)]);

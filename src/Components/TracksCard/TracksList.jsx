@@ -1,17 +1,15 @@
-import React from 'react';
-import { Feed } from 'semantic-ui-react';
-import { toTimestamp } from '../../utils';
+import React from "react";
+import { Feed } from "semantic-ui-react";
+import { toTimestamp } from "../../utils";
 
 const styles = {
-  overflowY: 'auto',
-  maxHeight: '400px',
-  minHeight: '400px',
-  paddingLeft: '1em',
+  overflowY: "auto",
+  maxHeight: "400px",
+  minHeight: "400px",
+  paddingLeft: "1em"
 };
 
-const TracksList = ({
-  tracks, showAlbumInfo, emptyMessage, style,
-}) => (
+const TracksList = ({ tracks, showAlbumInfo, emptyMessage, style }) => (
   <Feed style={{ ...styles, ...style }}>
     {tracks.map((track, i) => (
       <Feed.Event className="track-item" key={track.name}>
@@ -22,14 +20,22 @@ const TracksList = ({
         )}
         <Feed.Content>
           <Feed.Summary>
-            <a className="spotify-link" href={track.external_urls.spotify} target="_blank">
+            <a
+              className="spotify-link"
+              href={track.external_urls.spotify}
+              target="_blank"
+            >
               {track.name}
             </a>
             <Feed.Date>{toTimestamp(track.duration_ms)}</Feed.Date>
           </Feed.Summary>
           {showAlbumInfo && (
             <Feed.Extra>
-              <a className="spotify-link" href={track.album.external_urls.spotify} target="_blank">
+              <a
+                className="spotify-link"
+                href={track.album.external_urls.spotify}
+                target="_blank"
+              >
                 {track.album.name}
               </a>
             </Feed.Extra>
@@ -49,8 +55,8 @@ const TracksList = ({
 
 TracksList.defaultProps = {
   showAlbumInfo: true,
-  emptyMessage: 'No tracks available',
-  style: {},
+  emptyMessage: "No tracks available",
+  style: {}
 };
 
 export default TracksList;

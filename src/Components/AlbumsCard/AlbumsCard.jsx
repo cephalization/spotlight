@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import { Card, Grid, Dimmer, Loader } from 'semantic-ui-react';
-import TracksList from '../TracksCard/TracksList';
-import AlbumsList from './AlbumsList';
-import { tracksEndpoint, albumsEndpoint } from '../../endpoints';
-import { saveGeneralAuth, loadGeneralAuth, sortDate } from '../../utils';
+import React from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { Card, Grid, Dimmer, Loader } from "semantic-ui-react";
+import TracksList from "../TracksCard/TracksList";
+import AlbumsList from "./AlbumsList";
+import { tracksEndpoint, albumsEndpoint } from "../../endpoints";
+import { saveGeneralAuth, loadGeneralAuth, sortDate } from "../../utils";
 
 const getInitState = () => ({
   tracks: [],
   albums: [],
-  selectedAlbum: '',
+  selectedAlbum: "",
   loading: true,
-  tracksLoading: false,
+  tracksLoading: false
 });
 
 class AlbumsCard extends React.Component {
@@ -25,22 +25,28 @@ class AlbumsCard extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     // Make request for Albums
-    if (this.props.artistID !== '' && this.props.artistID !== prevProps.artistID) {
+    if (
+      this.props.artistID !== "" &&
+      this.props.artistID !== prevProps.artistID
+    ) {
       this.handleAlbumsRequest(this.props.artistID);
     }
 
     // Make request for album tracks
-    if (this.state.selectedAlbum !== '' && this.state.selectedAlbum !== prevState.selectedAlbum) {
+    if (
+      this.state.selectedAlbum !== "" &&
+      this.state.selectedAlbum !== prevState.selectedAlbum
+    ) {
       this.handleTracksRequest(this.state.selectedAlbum);
     }
 
     // Clear tracks if album is unselected
-    if (this.state.selectedAlbum === '' && prevState.selectedAlbum !== '') {
+    if (this.state.selectedAlbum === "" && prevState.selectedAlbum !== "") {
       this.setState({ tracks: [] });
     }
 
     // Clear all data is artist is empty
-    if (this.props.artistID === '' && prevProps.artistID !== '') {
+    if (this.props.artistID === "" && prevProps.artistID !== "") {
       // The artist ID is empty, must be getting a new artist
       // reset the state of this component
       this.setState(getInitState());
@@ -53,24 +59,25 @@ class AlbumsCard extends React.Component {
         .post(tracksEndpoint, {
           data: {
             albumID,
-            generalAuth: loadGeneralAuth(),
-          },
+            generalAuth: loadGeneralAuth()
+          }
         })
-        .then((response) => {
+        .then(response => {
           saveGeneralAuth(response.data.data.generalAuth);
           this.setState({
             tracksLoading: false,
-            tracks: response.data.data.tracks,
+            tracks: response.data.data.tracks
           });
         })
-        .catch((error) => {
+        .catch(error => {
           this.setState({
             tracks: [],
             tracksLoading: false,
-            selectedAlbum: '',
+            selectedAlbum: ""
           });
-          this.props.onError(error, 'An error occured searching for albums...');
-        }));
+          this.props.onError(error, "An error occured searching for albums...");
+        })
+    );
   }
 
   handleAlbumsRequest(artistID) {
@@ -79,24 +86,25 @@ class AlbumsCard extends React.Component {
         .post(albumsEndpoint, {
           data: {
             artistID,
-            generalAuth: loadGeneralAuth(),
-          },
+            generalAuth: loadGeneralAuth()
+          }
         })
-        .then((response) => {
+        .then(response => {
           saveGeneralAuth(response.data.data.generalAuth);
           this.setState({
             loading: false,
             // Sort the albums by date decending from newest
-            albums: response.data.data.albums.sort(sortDate).reverse(),
+            albums: response.data.data.albums.sort(sortDate).reverse()
           });
         })
-        .catch((error) => {
+        .catch(error => {
           this.setState({
             ...getInitState(),
-            loading: false,
+            loading: false
           });
-          this.props.onError(error, 'An error occured searching for albums...');
-        }));
+          this.props.onError(error, "An error occured searching for albums...");
+        })
+    );
   }
 
   albumSelected(albumID) {
@@ -108,9 +116,9 @@ class AlbumsCard extends React.Component {
       let message;
 
       if (this.state.tracksLoading) {
-        message = 'Loading tracks';
+        message = "Loading tracks";
       } else if (!this.state.selectedAlbum) {
-        message = 'Select an album';
+        message = "Select an album";
       }
 
       return message;
@@ -154,12 +162,12 @@ class AlbumsCard extends React.Component {
 AlbumsCard.propTypes = {
   artistID: PropTypes.string.isRequired,
   width: PropTypes.number,
-  onError: PropTypes.func,
+  onError: PropTypes.func
 };
 
 AlbumsCard.defaultProps = {
   width: null,
-  onError: () => {},
+  onError: () => {}
 };
 
 export default AlbumsCard;

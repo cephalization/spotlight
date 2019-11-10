@@ -1,22 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Header, Card } from 'semantic-ui-react';
-import axios from 'axios';
-import ContentSegment from '../ContentSegment/ContentSegment';
-import LoaderCard from '../Loaders/LoaderCard';
-import ArtistCard from '../ArtistCard/ArtistCard';
-import { relatedArtistsEndpoint } from '../../endpoints';
-import { saveGeneralAuth, loadGeneralAuth } from '../../utils';
+import React from "react";
+import PropTypes from "prop-types";
+import { Header, Card } from "semantic-ui-react";
+import axios from "axios";
+import ContentSegment from "../ContentSegment/ContentSegment";
+import LoaderCard from "../Loaders/LoaderCard";
+import ArtistCard from "../ArtistCard/ArtistCard";
+import { relatedArtistsEndpoint } from "../../endpoints";
+import { saveGeneralAuth, loadGeneralAuth } from "../../utils";
 
 const getInitState = () => ({
   artists: [],
-  loading: true,
+  loading: true
 });
 
 class RelatedArtists extends React.Component {
   constructor() {
     super();
-    this.handleRelatedArtistsRequest = this.handleRelatedArtistsRequest.bind(this);
+    this.handleRelatedArtistsRequest = this.handleRelatedArtistsRequest.bind(
+      this
+    );
 
     this.state = getInitState();
   }
@@ -24,13 +26,13 @@ class RelatedArtists extends React.Component {
   componentDidUpdate(prevProps) {
     if (
       this.props.primaryArtistID !== prevProps.primaryArtistID &&
-      this.props.primaryArtistID !== ''
+      this.props.primaryArtistID !== ""
     ) {
       // A new artist ID was received, re-query
       this.handleRelatedArtistsRequest(this.props.primaryArtistID);
     }
 
-    if (this.props.primaryArtistID === '' && prevProps.primaryArtistID !== '') {
+    if (this.props.primaryArtistID === "" && prevProps.primaryArtistID !== "") {
       // The artist ID is empty, must be getting a new artist
       // reset the state of this component
       this.setState(getInitState());
@@ -48,22 +50,25 @@ class RelatedArtists extends React.Component {
       .post(relatedArtistsEndpoint, {
         data: {
           artistID,
-          generalAuth: loadGeneralAuth(),
-        },
+          generalAuth: loadGeneralAuth()
+        }
       })
-      .then((response) => {
+      .then(response => {
         saveGeneralAuth(response.data.data.generalAuth);
         this.setState({
           loading: false,
-          artists: response.data.data.artists,
+          artists: response.data.data.artists
         });
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({
           ...getInitState(),
-          loading: false,
+          loading: false
         });
-        this.props.onError(error, 'An error occured searching for related artists...');
+        this.props.onError(
+          error,
+          "An error occured searching for related artists..."
+        );
       });
   }
 
@@ -80,9 +85,9 @@ class RelatedArtists extends React.Component {
           <Card.Group stackable centered itemsPerRow={2}>
             {this.state.artists.length
               ? this.state.artists.map(artist => (
-                <ArtistCard key={artist.name} artist={artist} compact />
+                  <ArtistCard key={artist.name} artist={artist} compact />
                 ))
-              : 'No related artists found.'}
+              : "No related artists found."}
           </Card.Group>
         )}
       </ContentSegment>
@@ -92,7 +97,7 @@ class RelatedArtists extends React.Component {
 
 RelatedArtists.propTypes = {
   primaryArtistID: PropTypes.string.isRequired,
-  onError: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired
 };
 
 export default RelatedArtists;

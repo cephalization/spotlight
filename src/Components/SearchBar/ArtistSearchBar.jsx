@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { withRouter } from "react-router-dom";
 
-import SearchBar from './SearchBar';
-import { artistSearchEndpoint } from '../../endpoints';
-import { saveGeneralAuth, loadGeneralAuth } from '../../utils';
+import SearchBar from "./SearchBar";
+import { artistSearchEndpoint } from "../../endpoints";
+import { saveGeneralAuth, loadGeneralAuth } from "../../utils";
 
 const getInitState = () => ({
-  loading: false,
+  loading: false
 });
 
 class ArtistSearchBar extends React.Component {
@@ -30,28 +30,29 @@ class ArtistSearchBar extends React.Component {
       .post(artistSearchEndpoint, {
         data: {
           artistQuery: query,
-          generalAuth: loadGeneralAuth(),
-        },
+          generalAuth: loadGeneralAuth()
+        }
       })
-      .then((response) => {
+      .then(response => {
         saveGeneralAuth(response.data.data.generalAuth);
         this.setState({ loading: false });
         this.props.history.push(`/artist/${response.data.data.artist.id}`);
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({
           ...getInitState(),
           loading: false,
-          errors: this.state.errors, // keep page errors when wiping the state
+          errors: this.state.errors // keep page errors when wiping the state
         });
-        this.props.onError(error, 'An error occured searching for that artist...');
+        this.props.onError(
+          error,
+          "An error occured searching for that artist..."
+        );
       });
   }
 
   render() {
-    const {
-      disabled, history, staticContext, ...rest
-    } = this.props;
+    const { disabled, history, staticContext, ...rest } = this.props;
     const { loading } = this.state;
 
     return (
@@ -62,10 +63,12 @@ class ArtistSearchBar extends React.Component {
         loading={loading}
         onEnter={
           // Accept input when the enter key is pressed, and the value is valid
-          (e) => {
+          e => {
             const search = e.target.value;
             if (search != null && search.length && !disabled) {
-              this.setState({ loading: true }, () => this.handleArtistSearchRequest(search));
+              this.setState({ loading: true }, () =>
+                this.handleArtistSearchRequest(search)
+              );
             }
           }
         }
@@ -77,15 +80,15 @@ class ArtistSearchBar extends React.Component {
 
 ArtistSearchBar.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired
   }).isRequired,
   disabled: PropTypes.bool,
-  onError: PropTypes.func,
+  onError: PropTypes.func
 };
 
 ArtistSearchBar.defaultProps = {
   disabled: false,
-  onError: () => {},
+  onError: () => {}
 };
 
 export default withRouter(ArtistSearchBar);

@@ -1,12 +1,12 @@
-import React from 'react';
-import { Segment, Container, Grid, Header, List } from 'semantic-ui-react';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import React from "react";
+import { Segment, Container, Grid, Header, List } from "semantic-ui-react";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 // Stylesheet object
 const styles = {
   footerSegment: {
-    padding: '5em 0em',
-  },
+    padding: "5em 0em"
+  }
 };
 
 /**
@@ -24,10 +24,10 @@ const PageFooter = () => (
                 <FontAwesomeIcon icon="id-badge" /> Portfolio
               </List.Item>
               <List.Item as="a" href="https://github.com/cephalization">
-                <FontAwesomeIcon icon={['fab', 'github']} /> GitHub
+                <FontAwesomeIcon icon={["fab", "github"]} /> GitHub
               </List.Item>
               <List.Item as="a" href="https://twitter.com/cephalization">
-                <FontAwesomeIcon icon={['fab', 'twitter']} /> Twitter
+                <FontAwesomeIcon icon={["fab", "twitter"]} /> Twitter
               </List.Item>
               <List.Item>
                 Made with <FontAwesomeIcon icon="code" />
@@ -39,7 +39,8 @@ const PageFooter = () => (
               Legal Stuff
             </Header>
             <p>
-              Don&apos;t sue me please, I very much like not being in legal trouble. <br />
+              Don&apos;t sue me please, I very much like not being in legal
+              trouble. <br />
               All rights to their respective owners.
             </p>
           </Grid.Column>

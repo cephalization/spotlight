@@ -1,31 +1,32 @@
-require('request');
-const moment = require('moment');
-const request = require('request');
-const querystring = require('querystring');
+require("request");
+const moment = require("moment");
+const request = require("request");
+const querystring = require("querystring");
 
 const BASE_URI =
   process.env.DEBUG_URI != null && process.env.DEBUG_URI.length
     ? process.env.DEBUG_URI
-    : '';
+    : "";
 
 // Generate authorization request information for a GENERAL token
 const {
   spotify_client_id,
   spotify_client_secret,
-  spotify_redirect_uri,
+  spotify_redirect_uri
 } = process.env;
 
-const authHeader =
-  `Basic ${new Buffer(`${spotify_client_id}:${spotify_client_secret}`).toString('base64')}`;
+const authHeader = `Basic ${new Buffer(
+  `${spotify_client_id}:${spotify_client_secret}`
+).toString("base64")}`;
 const authRequestOptions = {
-  url: 'https://accounts.spotify.com/api/token',
+  url: "https://accounts.spotify.com/api/token",
   headers: {
-    Authorization: authHeader,
+    Authorization: authHeader
   },
   form: {
-    grant_type: 'client_credentials',
+    grant_type: "client_credentials"
   },
-  json: true,
+  json: true
 };
 
 /**
@@ -63,11 +64,11 @@ function requestAuthorization(req, callback) {
     request.post(authRequestOptions, (e, res, body) => {
       if (!e && res.statusCode === 200) {
         const expiration_date = moment();
-        expiration_date.add(body.expires_in, 'seconds');
+        expiration_date.add(body.expires_in, "seconds");
         // Return new auth bundle to requesting endpoint
         callback(null, {
           ...body,
-          expires_on: expiration_date,
+          expires_on: expiration_date
         });
       } else {
         // Could not auth with Spotify, return error
@@ -98,11 +99,17 @@ function createAccessHeader(authentication) {
  * @param {Object} AUTHENTICATION generalAuth object described at top of this file
  * @param {Function} callback function to invoke after making the request
  */
-function spotifyGeneralRequest(URL, QUERY, REQUEST_TYPE, AUTHENTICATION, callback) {
+function spotifyGeneralRequest(
+  URL,
+  QUERY,
+  REQUEST_TYPE,
+  AUTHENTICATION,
+  callback
+) {
   const requestConfig = {
-    url: `${URL}${QUERY != null ? `?${QUERY}` : ''}`,
+    url: `${URL}${QUERY != null ? `?${QUERY}` : ""}`,
     headers: { Authorization: createAccessHeader(AUTHENTICATION) },
-    json: true,
+    json: true
   };
   request[REQUEST_TYPE](requestConfig, (e, response, body) => {
     callback(e, response, body);
@@ -111,16 +118,16 @@ function spotifyGeneralRequest(URL, QUERY, REQUEST_TYPE, AUTHENTICATION, callbac
 
 function spotifyAuthRequest(URL, AUTH_HEADER, QUERY, REQUEST_TYPE, callback) {
   const requestConfig = {
-    url: `${URL}${QUERY != null ? `?${QUERY}` : ''}`,
+    url: `${URL}${QUERY != null ? `?${QUERY}` : ""}`,
     headers: { Authorization: AUTH_HEADER },
-    json: true,
+    json: true
   };
   request[REQUEST_TYPE](requestConfig, (e, response, body) => {
     callback(e, response, body);
   });
 }
 
-const spotifyStateKey = 'spotify_auth_state';
+const spotifyStateKey = "spotify_auth_state";
 
 function spotifyLoginRequest() {
   /**
@@ -128,9 +135,10 @@ function spotifyLoginRequest() {
    * @param  {number} length The length of the string
    * @return {string} The generated string
    */
-  const generateStateID = function (length) {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const generateStateID = function(length) {
+    let text = "";
+    const possible =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     for (let i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -142,14 +150,14 @@ function spotifyLoginRequest() {
     const state = generateStateID(16);
     res.cookie(spotifyStateKey, state);
 
-    const loginScopes = 'user-read-private user-read-email user-top-read';
-    const authorizationURI = 'https://accounts.spotify.com/authorize';
+    const loginScopes = "user-read-private user-read-email user-top-read";
+    const authorizationURI = "https://accounts.spotify.com/authorize";
     const authorizationParams = querystring.stringify({
-      response_type: 'code',
+      response_type: "code",
       client_id: spotify_client_id,
       scope: loginScopes,
       redirect_uri: spotify_redirect_uri,
-      state,
+      state
     });
 
     res.redirect(`${authorizationURI}?${authorizationParams}`);
@@ -168,16 +176,18 @@ function spotifyLoginCallback() {
       res.clearCookie(spotifyStateKey);
 
       const authOptions = {
-        url: 'https://accounts.spotify.com/api/token',
+        url: "https://accounts.spotify.com/api/token",
         form: {
           code,
           redirect_uri: spotify_redirect_uri,
-          grant_type: 'authorization_code',
+          grant_type: "authorization_code"
         },
         headers: {
-          Authorization: `Basic ${new Buffer(`${spotify_client_id}:${spotify_client_secret}`).toString('base64')}`,
+          Authorization: `Basic ${new Buffer(
+            `${spotify_client_id}:${spotify_client_secret}`
+          ).toString("base64")}`
         },
-        json: true,
+        json: true
       };
 
       // Request tokens, return them to client
@@ -186,10 +196,12 @@ function spotifyLoginCallback() {
           const access_token = body.access_token;
           const refresh_token = body.refresh_token;
 
-          res.redirect(`${BASE_URI}/success?${querystring.stringify({
-            access_token,
-            refresh_token,
-          })}`);
+          res.redirect(
+            `${BASE_URI}/success?${querystring.stringify({
+              access_token,
+              refresh_token
+            })}`
+          );
         } else {
           res.redirect(`${BASE_URI}/error`);
         }
