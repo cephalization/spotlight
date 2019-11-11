@@ -16,7 +16,8 @@
   "env": {
     "spotify_client_id": "@spotify_client_id",
     "spotify_client_secret": "@spotify_client_secret",
-    "spotify_redirect_uri": "@redirect_uri"
+    "spotify_redirect_uri": "@redirect_uri",
+    "NODE_ENV": "production"
   },
   "routes": [
     {
