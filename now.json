@@ -6,7 +6,9 @@
     {
       "src": "package.json",
       "use": "@now/static-build",
-      "config": { "distDir": "build" }
+      "config": {
+        "distDir": "build"
+      }
     },
     {
       "src": "api/server.js",
@@ -14,27 +16,44 @@
     }
   ],
   "env": {
-    "spotify_client_id": "@spotify_client_id",
-    "spotify_client_secret": "@spotify_client_secret",
-    "spotify_redirect_uri": "@redirect_uri"
+    "SPOTIFY_CLIENT_ID": "@spotify_client_id",
+    "SPOTIFY_CLIENT_SECRET": "@spotify_client_secret",
+    "SPOTIFY_REDIRECT_URI": "@redirect_uri",
+    "NODE_ENV": "production"
   },
   "routes": [
     {
       "src": "/static/(.*)",
-      "headers": { "cache-control": "s-maxage=31536000,immutable" },
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
       "dest": "/static/$1"
     },
-    { "src": "/favicon.ico", "dest": "/favicon.ico" },
-    { "src": "/asset-manifest.json", "dest": "/asset-manifest.json" },
-    { "src": "/manifest.json", "dest": "/manifest.json" },
-    { "src": "/precache-manifest.(.*)", "dest": "/precache-manifest.$1" },
+    {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/asset-manifest.json",
+      "dest": "/asset-manifest.json"
+    },
+    {
+      "src": "/manifest.json",
+      "dest": "/manifest.json"
+    },
+    {
+      "src": "/precache-manifest.(.*)",
+      "dest": "/precache-manifest.$1"
+    },
     {
       "src": "/api/(.*)",
       "dest": "api/server.js"
     },
     {
       "src": "/(.*)",
-      "headers": { "cache-control": "s-maxage=0" },
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
       "dest": "/index.html"
     }
   ]
